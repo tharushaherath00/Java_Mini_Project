@@ -3,6 +3,7 @@ package DAO;
 import Models.Course;
 import utils.DBConnection;
 
+import javax.swing.plaf.basic.BasicDesktopIconUI;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,13 @@ public class CourseDAO {
         String sql = "INSERT INTO course(course_name,course_type,credit,department_id)VALUES(?,?,?,?)";
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql);
-            ){
+        ){
             stmt.setString(1,courseName);
             stmt.setString(2,courseType);
             stmt.setInt(3,credit);
             stmt.setInt(4,departmentId);
             stmt.executeUpdate();
-            connection.close();
+//            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -35,7 +36,7 @@ public class CourseDAO {
             PreparedStatement stmt = connection.prepareStatement(sql);){
             stmt.setInt(1,courseId);
             stmt.executeUpdate();
-            connection.close();
+//            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -50,7 +51,7 @@ public class CourseDAO {
             stmt.setInt(3,credit);
             stmt.setInt(4,courseId);
             stmt.executeUpdate();
-            connection.close();
+//            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
