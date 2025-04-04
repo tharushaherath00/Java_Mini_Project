@@ -3,7 +3,7 @@ echo Starting MySQL database import...
 
 set MYSQL_PATH="C:\Program Files\MySQL\MySQL Server 8.0\bin"
 set USER=root
-set PASSWORD=root
+set PASSWORD=Nilakshana_123@
 set SQL_FILE="sample.sql"
 
 if not exist %SQL_FILE% (
