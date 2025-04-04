@@ -28,7 +28,7 @@ Before running the project, make sure you have the following installed:
 1. **Clone the Repository:**
    Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/your-repo/lms.git
+   git clone https://github.com/tharushaherath00/Java_Mini_Project.git
    cd lms
    ```
 
@@ -59,8 +59,8 @@ We welcome contributions to the project! If you'd like to contribute, please fol
 2. **Clone Your Fork:**
     - Clone your fork to your local machine:
    ```bash
-   git clone https://github.com/your-username/lms.git
-   cd lms
+   git clone https://github.com/tharushaherath00/Java_Mini_Project.git
+   cd Java_Mini_Project
    ```
 
 3. **Create a New Branch:**
@@ -99,7 +99,7 @@ By following this process, you ensure that the codebase remains clean and mainta
 
 - **Importing the Database**:
     1. Run the `import.bat` script from the `db` folder to create the necessary tables in your database.
-    2. Update the database connection details in your project (e.g., `DatabaseConnector.java`) to point to your database host.
+    2. Update the database connection details in your project (e.g., `Database.java`) to point to your database host.
 
 ## License
 
