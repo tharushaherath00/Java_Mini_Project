@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a **Learning Management System (LMS)** developed using **JavaFX** and **MySQL**. The system is designed to be a fully functional LMS for managing courses, users, and other educational resources. It provides an intuitive GUI and connects to a MySQL database to manage the backend data.
+This is a **Learning Management System (LMS)** developed using **Swing** and **MySQL**. The system is designed to be a fully functional LMS for managing courses, users, and other educational resources. It provides an intuitive GUI and connects to a MySQL database to manage the backend data.
 
 ## Features
 
@@ -11,7 +11,7 @@ This is a **Learning Management System (LMS)** developed using **JavaFX** and **
 - User management (students, teachers, admins).
 - Course management (create, edit, delete courses).
 - Enrollment and attendance tracking.
-- Simple, clean, and extendable GUI built using JavaFX.
+- Simple, clean, and extendable GUI built using Swing.
 - Modular and extendable architecture for easy feature addition.
 
 ## Prerequisites
@@ -22,7 +22,6 @@ Before running the project, make sure you have the following installed:
 - **MySQL Server** (or any compatible database)
 - **MySQL Workbench** (optional, for managing your database visually)
 - **Maven** (optional, for managing dependencies)
-- **JavaFX** (to run the GUI)
 
 ## Setup and Installation
 
