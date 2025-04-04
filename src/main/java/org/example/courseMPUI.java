@@ -29,7 +29,7 @@ public class courseMPUI extends JFrame {
 
     public courseMPUI() {
         setTitle("Course Management");
-        setSize(500,500);
+        setSize(500,300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setContentPane(main);
