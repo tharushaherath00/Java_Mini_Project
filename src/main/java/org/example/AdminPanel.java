@@ -1,6 +1,8 @@
 package org.example;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AdminPanel extends JFrame {
     private JLabel welcomeLabel;
@@ -13,7 +15,7 @@ public class AdminPanel extends JFrame {
 
     public AdminPanel(User user) {
         setTitle("Admin Dashboard");
-        setSize(500, 300);
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setContentPane(main);
@@ -23,5 +25,11 @@ public class AdminPanel extends JFrame {
 
 
         setVisible(true);
+        courseManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                courseMPUI course = new courseMPUI();
+            }
+        });
     }
 }
