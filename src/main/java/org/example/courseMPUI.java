@@ -62,7 +62,7 @@ public class courseMPUI extends JFrame {
 
                 String query = "INSERT INTO course(c_id,c_name,c_type,c_credit) VALUES(?,?,?,?)";
                 String checkUser = "SELECT * FROM course WHERE c_id = ?";
-                if(courseId.equals(null)||courseName.equals(null)||credit.equals(null)||type.getSelectedItem()==null){
+                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
                     JOptionPane.showMessageDialog(null,"All fields need to filled");
                     return;
                 }
@@ -133,7 +133,7 @@ public class courseMPUI extends JFrame {
 
                 String query = "UPDATE course SET c_name = ?,c_type = ?,c_credit = ? WHERE c_id = ?";
                 //String checkUser = "SELECT * FROM course WHERE c_id = ?";
-                if(courseId.equals(null)||courseName.equals(null)||credit.equals(null)||type.getSelectedItem()==null){
+                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
                     JOptionPane.showMessageDialog(null,"All fields need to filled");
                     return;
                 }
@@ -177,7 +177,7 @@ public class courseMPUI extends JFrame {
                 String Ctype = type.getSelectedItem().toString();
                 String credit = courseCredit.getText();
                 String query = "DELETE FROM course WHERE c_id = ?";
-                if(courseId.equals(null)||courseName.equals(null)||credit.equals(null)||type.getSelectedItem()==null){
+                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
                     JOptionPane.showMessageDialog(null,"All fields need to filled");
                     return;
                 }
