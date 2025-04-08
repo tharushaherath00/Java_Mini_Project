@@ -31,5 +31,11 @@ public class AdminPanel extends JFrame {
                 courseMPUI course = new courseMPUI();
             }
         });
+        noticeManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                noticeMUI notice = new noticeMUI();
+            }
+        });
     }
 }
