@@ -17,6 +17,7 @@ public class noticeMUI extends JFrame {
     private JButton addButton;
     private JButton delete;
     private JPanel noticeManagementPanel;
+    private JButton backtoAdmin;
     private DefaultTableModel dtm;
     private Connection con;
     private PreparedStatement pstmt;
@@ -107,6 +108,12 @@ public class noticeMUI extends JFrame {
                 }catch (Exception x){
                     JOptionPane.showMessageDialog(null,x.getMessage());
                 }
+            }
+        });
+        backtoAdmin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
             }
         });
     }
