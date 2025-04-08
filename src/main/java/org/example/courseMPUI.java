@@ -205,6 +205,12 @@ public class courseMPUI extends JFrame {
 
             }
         });
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
     }
     public void createTable(){
         table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType"}));
