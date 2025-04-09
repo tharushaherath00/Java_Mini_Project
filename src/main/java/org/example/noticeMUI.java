@@ -28,6 +28,7 @@ public class noticeMUI extends JFrame {
     public noticeMUI() {
         setTitle("add notice");
         setSize(400,500);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(noticeManagementPanel);
         setVisible(true);
@@ -113,7 +114,10 @@ public class noticeMUI extends JFrame {
         backtoAdmin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                AdminPanel adminPanel = new AdminPanel();
                 dispose();
+                adminPanel.setVisible(true);
+
             }
         });
     }

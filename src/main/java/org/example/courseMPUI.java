@@ -36,7 +36,8 @@ public class courseMPUI extends JFrame {
 
     public courseMPUI() {
         setTitle("Course Management");
-        setSize(500,300);
+        setSize(400,500);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setContentPane(main);
@@ -208,7 +209,9 @@ public class courseMPUI extends JFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                AdminPanel adminPanel = new AdminPanel();
                 dispose();
+                adminPanel.setVisible(true);
             }
         });
     }

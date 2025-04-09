@@ -26,6 +26,7 @@ public class addNoticeUI extends JFrame {
     public addNoticeUI() {
         setTitle("add notice");
         setSize(400,500);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(addNoticePanel);
         setVisible(true);
