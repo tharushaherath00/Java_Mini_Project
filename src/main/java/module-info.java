@@ -4,6 +4,7 @@ module org.example.lms {
 
     requires com.dlsc.formsfx;
     requires java.sql;
+    requires java.desktop;
 
     opens org.example.lms to javafx.fxml;
     exports org.example.lms;
