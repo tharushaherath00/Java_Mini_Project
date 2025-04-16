@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -29,6 +30,7 @@ public class addNoticeUI extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(addNoticePanel);
+
         setVisible(true);
         setLocationRelativeTo(null);
         comboBox1.addItem("Student");
