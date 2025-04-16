@@ -12,7 +12,6 @@ import java.util.Vector;
 public class noticeMUI extends JFrame {
     private JLabel heading;
     private JTable table1;
-    private JLabel description;
     private JTextArea textArea1;
     private JButton addButton;
     private JButton delete;
@@ -31,10 +30,10 @@ public class noticeMUI extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(noticeManagementPanel);
-        setVisible(true);
         setLocationRelativeTo(null);
         textArea1.setLineWrap(true);
         textArea1.setWrapStyleWord(true);
+        setVisible(true);
 
         createTable();
         tableLoad();
@@ -104,7 +103,9 @@ public class noticeMUI extends JFrame {
                             JOptionPane.showMessageDialog(null,"Error in deletion");
                             return;
                         }
-                        tableLoad();
+//                        new noticeMUI(); not worked !
+                          tableLoad();
+
                     }
                 }catch (Exception x){
                     JOptionPane.showMessageDialog(null,x.getMessage());
