@@ -45,6 +45,10 @@ public class AdminPanel extends JFrame {
 
     }
 
+    public User getUser(){
+        return user;
+    }
+
     public void setup(){
         welcomeLable.setText("Welcome, "+user.getUsername()+"("+user.getRole()+")");
 

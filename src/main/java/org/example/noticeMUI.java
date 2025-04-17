@@ -23,6 +23,8 @@ public class noticeMUI extends JFrame {
     private ResultSet rs;
     private int selectRow;
     private String query;
+    private String publisherName;
+    private String userName = new AdminPanel().getUser().getUsername();
 
     public noticeMUI() {
         setTitle("add notice");
@@ -48,6 +50,7 @@ public class noticeMUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
                 try{
                     dtm = (DefaultTableModel)table1.getModel();
                       selectRow = table1.getSelectedRow();
@@ -57,19 +60,32 @@ public class noticeMUI extends JFrame {
                       pstmt = con.prepareStatement(query);
                       pstmt.setString(1,id);
                       rs = pstmt.executeQuery();
-
                       if(rs.next()){
                           String title = rs.getString(2);
                           String content = rs.getString(3);
                           String pDate = rs.getString(4);
                           String by = rs.getString(5);
                           String to = rs.getString(6);
+                          try{
+                              query = "SELECT username FROM users JOIN notices ON notices.posted_by = users.user_id WHERE notices.posted_by = ?";
+                              con = Database.getConnection();
+                              pstmt = con.prepareStatement(query);
+                              pstmt.setString(1,by);
+                              rs = pstmt.executeQuery();
+                              if(rs.next()){
+                                  publisherName = rs.getString(1);
+                              }else{
+                                  publisherName = "Publisher is not defined";
+                              }
+                          }catch(SQLException t){
+                              System.out.println(t.getMessage());
+                          }
 
                           textArea1.setText(
                                           "📌 Title      : " + title + "\n"+
                                           "📝 Content    : " + content + "\n" +
                                           "📅 Posted On  : " + pDate + "\n" +
-                                          "👤 Posted By  : " + by + "\n" +
+                                          "👤 Posted By  : " + publisherName + "\n" +
                                           "🎯 Target Role: " + to
                           );
                       }else{
@@ -151,4 +167,6 @@ public class noticeMUI extends JFrame {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
     }
+
+
 }
