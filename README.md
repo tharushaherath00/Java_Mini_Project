@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a **Learning Management System (LMS)** developed using **JavaFX** and **MySQL**. The system is designed to be a fully functional LMS for managing courses, users, and other educational resources. It provides an intuitive GUI and connects to a MySQL database to manage the backend data.
+This is a **Learning Management System (LMS)** developed using **Swing** and **MySQL**. The system is designed to be a fully functional LMS for managing courses, users, and other educational resources. It provides an intuitive GUI and connects to a MySQL database to manage the backend data.
 
 ## Features
 
@@ -11,7 +11,7 @@ This is a **Learning Management System (LMS)** developed using **JavaFX** and **
 - User management (students, teachers, admins).
 - Course management (create, edit, delete courses).
 - Enrollment and attendance tracking.
-- Simple, clean, and extendable GUI built using JavaFX.
+- Simple, clean, and extendable GUI built using Swing.
 - Modular and extendable architecture for easy feature addition.
 
 ## Prerequisites
@@ -22,14 +22,13 @@ Before running the project, make sure you have the following installed:
 - **MySQL Server** (or any compatible database)
 - **MySQL Workbench** (optional, for managing your database visually)
 - **Maven** (optional, for managing dependencies)
-- **JavaFX** (to run the GUI)
 
 ## Setup and Installation
 
 1. **Clone the Repository:**
    Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/your-repo/lms.git
+   git clone https://github.com/tharushaherath00/Java_Mini_Project.git
    cd lms
    ```
 
@@ -60,8 +59,8 @@ We welcome contributions to the project! If you'd like to contribute, please fol
 2. **Clone Your Fork:**
     - Clone your fork to your local machine:
    ```bash
-   git clone https://github.com/your-username/lms.git
-   cd lms
+   git clone https://github.com/tharushaherath00/Java_Mini_Project.git
+   cd Java_Mini_Project
    ```
 
 3. **Create a New Branch:**
@@ -100,7 +99,7 @@ By following this process, you ensure that the codebase remains clean and mainta
 
 - **Importing the Database**:
     1. Run the `import.bat` script from the `db` folder to create the necessary tables in your database.
-    2. Update the database connection details in your project (e.g., `DatabaseConnector.java`) to point to your database host.
+    2. Update the database connection details in your project (e.g., `Database.java`) to point to your database host.
 
 ## License
 
