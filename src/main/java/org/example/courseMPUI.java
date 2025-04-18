@@ -2,6 +2,8 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,7 +38,7 @@ public class courseMPUI extends JFrame {
 
     public courseMPUI() {
         setTitle("Course Management");
-        setSize(400,500);
+        setSize(600,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -217,6 +219,14 @@ public class courseMPUI extends JFrame {
     }
     public void createTable(){
         table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType"}));
+        table1.setRowHeight(25); // Make rows taller
+        table1.setShowGrid(true);
+        table1.setGridColor(Color.LIGHT_GRAY);
+        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        JTableHeader header = table1.getTableHeader();
+        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
+        header.setForeground(Color.WHITE);
     }
 
     public void tableLoad(){

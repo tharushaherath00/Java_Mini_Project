@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class addNoticeUI extends JFrame {
     private JComboBox comboBox1;
     private JTextArea notice;
-    private JLabel heading;
     private JLabel titleLable;
     private JLabel audianceLable;
     private JLabel noticeLable;
@@ -29,7 +28,7 @@ public class addNoticeUI extends JFrame {
 
     public addNoticeUI() {
         setTitle("add notice");
-        setSize(500,500);
+        setSize(600,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(addNoticePanel);
@@ -42,6 +41,7 @@ public class addNoticeUI extends JFrame {
 //        comboBox1.addItem("Dean");
         comboBox1.addItem("All");
 //        System.out.println(new AdminPanel().getUser().getUsername());
+        headingPanel.setSize(600,200);
         getUserId();
 
 
