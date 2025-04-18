@@ -55,6 +55,7 @@ public class courseMPUI extends JFrame {
                 String Id = courseId.getText();
                 String name = courseName.getText();
                 String Ctype = type.getSelectedItem().toString();
+                int Ccredit;
 //                for radio button
 
 //                if(practical.isSelected()){
@@ -66,7 +67,7 @@ public class courseMPUI extends JFrame {
                 String query = "INSERT INTO course(c_id,c_name,c_type,c_credit) VALUES(?,?,?,?)";
                 String checkUser = "SELECT * FROM course WHERE c_id = ?";
                 if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
-                    JOptionPane.showMessageDialog(null,"All fields need to filled");
+                    JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
                 }
                 try{
@@ -78,7 +79,14 @@ public class courseMPUI extends JFrame {
                         JOptionPane.showMessageDialog(null,"Course already exist");
                         return;
                     }else{
-                        int Ccredit = Integer.parseInt(credit);
+                        try {
+                            Ccredit = Integer.parseInt(credit);
+                        } catch (NumberFormatException nfe) {
+                            JOptionPane.showMessageDialog(null, "Course credit must be a number.");
+                            return;
+                        }
+
+//                        int Ccredit = Integer.parseInt(credit);
                         pstmt = con.prepareStatement(query);
                         pstmt.setString(1,Id);
                         pstmt.setString(2,name);
@@ -126,6 +134,7 @@ public class courseMPUI extends JFrame {
                 String Id = courseId.getText();
                 String name = courseName.getText();
                 String Ctype = type.getSelectedItem().toString();
+                int Ccredit;
 //                for radio button
 
 //                if(practical.isSelected()){
@@ -137,7 +146,7 @@ public class courseMPUI extends JFrame {
                 String query = "UPDATE course SET c_name = ?,c_type = ?,c_credit = ? WHERE c_id = ?";
                 //String checkUser = "SELECT * FROM course WHERE c_id = ?";
                 if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
-                    JOptionPane.showMessageDialog(null,"All fields need to filled");
+                    JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
                 }
                 try{
@@ -149,8 +158,14 @@ public class courseMPUI extends JFrame {
 //                        JOptionPane.showMessageDialog(null,"Course already exist");
 //                        return;
 //                    }
+                    try {
+                        Ccredit = Integer.parseInt(credit);
+                    } catch (NumberFormatException nfe) {
+                        JOptionPane.showMessageDialog(null, "Course credit must be a number.");
+                        return;
+                    }
 
-                        int Ccredit = Integer.parseInt(credit);
+//                        Ccredit = Integer.parseInt(credit);
                         pstmt = con.prepareStatement(query);
                         pstmt.setString(4,Id);
                         pstmt.setString(1,name);
@@ -181,7 +196,7 @@ public class courseMPUI extends JFrame {
                 String credit = courseCredit.getText();
                 String query = "DELETE FROM course WHERE c_id = ?";
                 if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
-                    JOptionPane.showMessageDialog(null,"All fields need to filled");
+                    JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
                 }
                 try{
