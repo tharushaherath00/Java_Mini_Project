@@ -28,6 +28,10 @@ public class courseMPUI extends JFrame {
     DefaultTableModel dtm;
 //    private JRadioButton practical;
     private JComboBox type;
+    private JLabel lectureId;
+    private JTextField lecturer;
+    private JComboBox department;
+    private JLabel depId;
 
     Connection con;
     Statement stmt;
@@ -38,7 +42,7 @@ public class courseMPUI extends JFrame {
 
     public courseMPUI() {
         setTitle("Course Management");
-        setSize(600,500);
+        setSize(1920,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -46,6 +50,10 @@ public class courseMPUI extends JFrame {
         setVisible(true);
         type.addItem("Practical");
         type.addItem("Theory");
+        type.addItem("Theory+Practical");
+        department.addItem("ET");
+        department.addItem("ICT");
+        department.addItem("BST");
         createTable();
         tableLoad();
 
@@ -63,10 +71,12 @@ public class courseMPUI extends JFrame {
 //                }else
 //                    type = "Theory";
                 String credit = courseCredit.getText();
+                String dep = department.getSelectedItem().toString();
+                String lec = lecturer.getText();
 
-                String query = "INSERT INTO course(c_id,c_name,c_type,c_credit) VALUES(?,?,?,?)";
-                String checkUser = "SELECT * FROM course WHERE c_id = ?";
-                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
+                String query = "INSERT INTO course(Course_ID,Course_Name,Course_Type,Credit,Dep_ID,Lecturer_ID) VALUES(?,?,?,?,?,?)";
+                String checkUser = "SELECT * FROM course WHERE Course_ID = ?";
+                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null||department.getSelectedItem()==null||lecturer.getText().isEmpty()){
                     JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
                 }
@@ -92,12 +102,17 @@ public class courseMPUI extends JFrame {
                         pstmt.setString(2,name);
                         pstmt.setString(3,type.getSelectedItem().toString());
                         pstmt.setInt(4,Ccredit);
+                        pstmt.setString(5,dep);
+                        pstmt.setString(6,lec);
                         int i = pstmt.executeUpdate();
                         if(i>0) {
                             JOptionPane.showMessageDialog(null, "Course added successfully");
                             courseId.setText("");
                             courseName.setText("");
                             courseCredit.setText("");
+                            lecturer.setText("");
+                            department.setSelectedItem(null);
+                            type.setSelectedItem(null);
                             tableLoad();
                         }
                     }
@@ -119,8 +134,10 @@ public class courseMPUI extends JFrame {
                 String cId = dtm.getValueAt(selectRow,0).toString();
                 courseId.setText(cId);
                 courseName.setText(dtm.getValueAt(selectRow,1).toString());
-                type.setSelectedItem(dtm.getValueAt(selectRow,2));
-                courseCredit.setText(dtm.getValueAt(selectRow,3).toString());
+                type.setSelectedItem(dtm.getValueAt(selectRow,3));
+                courseCredit.setText(dtm.getValueAt(selectRow,2).toString());
+                lecturer.setText(dtm.getValueAt(selectRow,4).toString());
+                department.setSelectedItem(dtm.getValueAt(selectRow,5));
 
 
 
@@ -142,10 +159,12 @@ public class courseMPUI extends JFrame {
 //                }else
 //                    type = "Theory";
                 String credit = courseCredit.getText();
+                String dep = department.getSelectedItem().toString();
+                String lec = lecturer.getText();
 
-                String query = "UPDATE course SET c_name = ?,c_type = ?,c_credit = ? WHERE c_id = ?";
+                String query = "UPDATE course SET Course_Name = ?,Course_Type = ?,Credit = ?,Lecturer_ID = ?,Dep_ID = ? WHERE Course_ID = ?";
                 //String checkUser = "SELECT * FROM course WHERE c_id = ?";
-                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
+                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null||department.getSelectedItem()==null||lecturer.getText().isEmpty()){
                     JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
                 }
@@ -167,16 +186,22 @@ public class courseMPUI extends JFrame {
 
 //                        Ccredit = Integer.parseInt(credit);
                         pstmt = con.prepareStatement(query);
-                        pstmt.setString(4,Id);
+                        pstmt.setString(6,Id);
                         pstmt.setString(1,name);
-                        pstmt.setString(2,type.getSelectedItem().toString());
+                        pstmt.setString(2,Ctype);
                         pstmt.setInt(3,Ccredit);
+                        pstmt.setString(4,lec);
+                        pstmt.setString(5,dep);
+
                         int i = pstmt.executeUpdate();
                         if(i>0) {
                             JOptionPane.showMessageDialog(null, "Course Updated successfully");
                             courseId.setText("");
                             courseName.setText("");
                             courseCredit.setText("");
+                            type.setSelectedItem(null);
+                            department.setSelectedItem(null);
+                            lecturer.setText("");
                             tableLoad();
                         }
 
@@ -191,12 +216,12 @@ public class courseMPUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String Id = courseId.getText();
-                String name = courseName.getText();
-                String Ctype = type.getSelectedItem().toString();
-                String credit = courseCredit.getText();
-                String query = "DELETE FROM course WHERE c_id = ?";
-                if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null){
-                    JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
+//                String name = courseName.getText();
+//                String Ctype = type.getSelectedItem().toString();
+//                String credit = courseCredit.getText();
+                String query = "DELETE FROM course WHERE Course_ID = ?";
+                if(courseId.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null,"Please provide Course Id to delete");
                     return;
                 }
                 try{
@@ -233,7 +258,7 @@ public class courseMPUI extends JFrame {
         });
     }
     public void createTable(){
-        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType"}));
+        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType","Lecturer_ID","Dep_ID"}));
         table1.setRowHeight(25); // Make rows taller
         table1.setShowGrid(true);
         table1.setGridColor(Color.LIGHT_GRAY);
@@ -254,18 +279,33 @@ public class courseMPUI extends JFrame {
             count = rsmd.getColumnCount();
             DefaultTableModel dtm = (DefaultTableModel)table1.getModel();
             dtm.setRowCount(0);
+//            while(rs.next()){
+//                Vector v = new Vector();
+//                for(int i = 1;i<=count;i++){
+//                    v.add(rs.getString(1));
+//                    v.add(rs.getString(2));
+//                    v.add((rs.getString(3)));
+//                    v.add(rs.getInt(4));
+//                }
+//                dtm.addRow(v);
+//            }
             while(rs.next()){
-                Vector v = new Vector();
-                for(int i = 1;i<=count;i++){
-                    v.add(rs.getString(1));
-                    v.add(rs.getString(2));
-                    v.add((rs.getString(3)));
-                    v.add(rs.getInt(4));
-                }
+                Vector<String> v = new Vector<>();
+                v.add(rs.getString("Course_ID"));
+                v.add(rs.getString("Course_Name"));
+                v.add(String.valueOf(rs.getInt("Credit"))); // convert to String for consistency
+                v.add(rs.getString("Course_Type"));
+                v.add(rs.getString("Lecturer_ID"));
+                v.add(rs.getString("Dep_ID"));
                 dtm.addRow(v);
             }
+
         }catch (SQLException e){
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        new courseMPUI();
     }
 }
