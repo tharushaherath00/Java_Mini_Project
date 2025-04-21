@@ -45,7 +45,7 @@ public class courseMPUI extends JFrame {
 
     public courseMPUI() {
         setTitle("Course Management");
-        setSize(1920,500);
+        setSize(1000,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -53,7 +53,7 @@ public class courseMPUI extends JFrame {
         setVisible(true);
         type.addItem("Practical");
         type.addItem("Theory");
-        type.addItem("Theory+Practical");
+        type.addItem("Theory + Practical");
         department.addItem("ET");
         department.addItem("ICT");
         department.addItem("BST");
@@ -329,7 +329,9 @@ public class courseMPUI extends JFrame {
         }
     }
 
-
+    public static void main(String[] args) {
+        new courseMPUI();
+    }
 
     public void loadLecturers() {
         try {
