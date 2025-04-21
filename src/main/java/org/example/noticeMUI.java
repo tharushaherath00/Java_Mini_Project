@@ -2,6 +2,8 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,7 +14,6 @@ import java.util.Vector;
 public class noticeMUI extends JFrame {
     private JLabel heading;
     private JTable table1;
-    private JLabel description;
     private JTextArea textArea1;
     private JButton addButton;
     private JButton delete;
@@ -24,17 +25,20 @@ public class noticeMUI extends JFrame {
     private ResultSet rs;
     private int selectRow;
     private String query;
+    private String publisherName;
+    private String userName = new AdminPanel().getUser().getUsername();
 
     public noticeMUI() {
         setTitle("add notice");
-        setSize(400,500);
+        setSize(600,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(noticeManagementPanel);
-        setVisible(true);
         setLocationRelativeTo(null);
         textArea1.setLineWrap(true);
         textArea1.setWrapStyleWord(true);
+        textArea1.setColumns(30);
+        setVisible(true);
 
         createTable();
         tableLoad();
@@ -49,6 +53,7 @@ public class noticeMUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
                 try{
                     dtm = (DefaultTableModel)table1.getModel();
                       selectRow = table1.getSelectedRow();
@@ -58,20 +63,35 @@ public class noticeMUI extends JFrame {
                       pstmt = con.prepareStatement(query);
                       pstmt.setString(1,id);
                       rs = pstmt.executeQuery();
-
                       if(rs.next()){
                           String title = rs.getString(2);
                           String content = rs.getString(3);
                           String pDate = rs.getString(4);
                           String by = rs.getString(5);
                           String to = rs.getString(6);
+                          try{
+                              query = "SELECT username FROM users JOIN notices ON notices.posted_by = users.user_id WHERE notices.posted_by = ?";
+                              con = Database.getConnection();
+                              pstmt = con.prepareStatement(query);
+                              pstmt.setString(1,by);
+                              rs = pstmt.executeQuery();
+                              if(rs.next()){
+                                  publisherName = rs.getString(1);
+                              }else{
+                                  publisherName = "Publisher is not defined";
+                              }
+                          }catch(SQLException t){
+                              System.out.println(t.getMessage());
+                          }
 
                           textArea1.setText(
+                                          "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
                                           "📌 Title      : " + title + "\n"+
                                           "📝 Content    : " + content + "\n" +
                                           "📅 Posted On  : " + pDate + "\n" +
-                                          "👤 Posted By  : " + by + "\n" +
-                                          "🎯 Target Role: " + to
+                                          "👤 Posted By  : " + publisherName + "\n" +
+                                          "🎯 Target Role: " + to+"\n"+
+                                                  "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
                           );
                       }else{
                           textArea1.setText("No data found for that notice!..");
@@ -104,7 +124,9 @@ public class noticeMUI extends JFrame {
                             JOptionPane.showMessageDialog(null,"Error in deletion");
                             return;
                         }
-                        tableLoad();
+//                        new noticeMUI(); not worked !
+                          tableLoad();
+
                     }
                 }catch (Exception x){
                     JOptionPane.showMessageDialog(null,x.getMessage());
@@ -124,6 +146,15 @@ public class noticeMUI extends JFrame {
 
     public void createTable(){
         table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"Id","Title","Posted Date","Target"}));
+        table1.setRowHeight(25); // Make rows taller
+        table1.setShowGrid(true);
+        table1.setGridColor(Color.LIGHT_GRAY);
+        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        JTableHeader header = table1.getTableHeader();
+        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
+        header.setForeground(Color.WHITE);
+
     }
 
     public void tableLoad(){
@@ -150,4 +181,6 @@ public class noticeMUI extends JFrame {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
     }
+
+
 }

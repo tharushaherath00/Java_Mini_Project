@@ -1,17 +1,15 @@
 package org.example;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.time.LocalDateTime;
-import java.sql.Timestamp;
 
 public class addNoticeUI extends JFrame {
     private JComboBox comboBox1;
     private JTextArea notice;
-    private JLabel heading;
     private JLabel titleLable;
     private JLabel audianceLable;
     private JLabel noticeLable;
@@ -20,15 +18,21 @@ public class addNoticeUI extends JFrame {
     private JPanel addNoticePanel;
     private JTextField titleField;
     private JTextArea noticeField;
+    private JPanel headingPanel;
+    private String userName = new AdminPanel().getUser().getUsername();
+    private static int userid;
+
     Connection con;
     PreparedStatement pstmt;
+    ResultSet rs;
 
     public addNoticeUI() {
         setTitle("add notice");
-        setSize(400,500);
+        setSize(600,500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(addNoticePanel);
+//        headingPanel.setSize(500,100);
         setVisible(true);
         setLocationRelativeTo(null);
         comboBox1.addItem("Student");
@@ -36,6 +40,10 @@ public class addNoticeUI extends JFrame {
 //        comboBox1.addItem("Admin");
 //        comboBox1.addItem("Dean");
         comboBox1.addItem("All");
+//        System.out.println(new AdminPanel().getUser().getUsername());
+        headingPanel.setSize(600,200);
+        getUserId();
+
 
         back.addActionListener(new ActionListener() {
             @Override
@@ -57,7 +65,7 @@ public class addNoticeUI extends JFrame {
                     String notice = noticeField.getText();
                     LocalDateTime now = LocalDateTime.now();
                     Timestamp timestamp = Timestamp.valueOf(now);
-                    String query = "INSERT INTO notices(title,content,posted_date,target_role)VALUES(?,?,?,?)";
+                    String query = "INSERT INTO notices(title,content,posted_date,posted_by,target_role)VALUES(?,?,?,?,?)";
 
                     try{
                         con = Database.getConnection();
@@ -65,7 +73,8 @@ public class addNoticeUI extends JFrame {
                         pstmt.setString(1,title);
                         pstmt.setString(2,notice);
                         pstmt.setTimestamp(3,timestamp);
-                        pstmt.setString(4,target);
+                        pstmt.setInt(4,userid);
+                        pstmt.setString(5,target);
                         int i = pstmt.executeUpdate();
                         if(i>0){
                             JOptionPane.showMessageDialog(null,"Notice published successfully");
@@ -83,4 +92,31 @@ public class addNoticeUI extends JFrame {
             }
         });
     }
+
+//    public static void main(String[] args) {
+//        new addNoticeUI();
+//    }
+
+    public void getUserId() {
+        String query = "SELECT * FROM users WHERE username =?";
+        try {
+            con = Database.getConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, userName);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                addNoticeUI.userid= rs.getInt(1); // Safe: only called if result exists
+
+            } else {
+                System.out.println("Invalid User!");
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+
+        }
+    }
+
 }
