@@ -70,7 +70,7 @@ public class noticeMUI extends JFrame {
                           String by = rs.getString(5);
                           String to = rs.getString(6);
                           try{
-                              query = "SELECT username FROM users JOIN notices ON notices.posted_by = users.user_id WHERE notices.posted_by = ?";
+                              query = "SELECT Name FROM user JOIN notices ON notices.posted_by = user.NIC WHERE notices.posted_by = ?";
                               con = Database.getConnection();
                               pstmt = con.prepareStatement(query);
                               pstmt.setString(1,by);

@@ -1,7 +1,6 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -18,9 +17,10 @@ public class addNoticeUI extends JFrame {
     private JPanel addNoticePanel;
     private JTextField titleField;
     private JTextArea noticeField;
+    private JButton clear;
     private JPanel headingPanel;
     private String userName = new AdminPanel().getUser().getUsername();
-    private static int userid;
+    private static String userid;
 
     Connection con;
     PreparedStatement pstmt;
@@ -41,7 +41,7 @@ public class addNoticeUI extends JFrame {
 //        comboBox1.addItem("Dean");
         comboBox1.addItem("All");
 //        System.out.println(new AdminPanel().getUser().getUsername());
-        headingPanel.setSize(600,200);
+//        headingPanel.setSize(600,200);
         getUserId();
 
 
@@ -73,7 +73,7 @@ public class addNoticeUI extends JFrame {
                         pstmt.setString(1,title);
                         pstmt.setString(2,notice);
                         pstmt.setTimestamp(3,timestamp);
-                        pstmt.setInt(4,userid);
+                        pstmt.setString(4,userid);
                         pstmt.setString(5,target);
                         int i = pstmt.executeUpdate();
                         if(i>0){
@@ -91,6 +91,14 @@ public class addNoticeUI extends JFrame {
 
             }
         });
+        clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                titleField.setText("");
+                comboBox1.setSelectedItem(null);
+                noticeField.setText("");
+            }
+        });
     }
 
 //    public static void main(String[] args) {
@@ -98,7 +106,7 @@ public class addNoticeUI extends JFrame {
 //    }
 
     public void getUserId() {
-        String query = "SELECT * FROM users WHERE username =?";
+        String query = "SELECT * FROM user WHERE Email =?";
         try {
             con = Database.getConnection();
             pstmt = con.prepareStatement(query);
@@ -106,7 +114,7 @@ public class addNoticeUI extends JFrame {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                addNoticeUI.userid= rs.getInt(1); // Safe: only called if result exists
+                addNoticeUI.userid= rs.getString(1); // Safe: only called if result exists
 
             } else {
                 System.out.println("Invalid User!");
