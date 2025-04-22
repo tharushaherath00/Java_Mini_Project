@@ -158,7 +158,7 @@ CREATE TABLE Timetable (
 
 -- Insert sample data into Users
 INSERT INTO Users (username, password, role) VALUES
-('ADMIN001', '4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', 'admin'),
+('ADMIN001', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'admin'),
 ('DEAN001', '4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', 'dean'),
 ('LEC001', '4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', 'lecturer'),
 ('LEC002', '4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', 'lecturer'),
