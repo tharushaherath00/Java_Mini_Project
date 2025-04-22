@@ -41,7 +41,7 @@ public class Login extends JFrame {
             return;
         }
 
-        String query = "SELECT password, role FROM users WHERE username = ?";
+        String query = "SELECT Password, Role FROM User WHERE Email = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
