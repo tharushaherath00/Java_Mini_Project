@@ -1,23 +1,80 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AdminPanel extends JFrame {
-    private JPanel mainPanel;
-    private JLabel welcomeLabel;
+    private JButton userManagement;
+    private JButton courseManagement;
+    private JButton noticeManagement;
+    private JButton timetableManagement;
+    private JLabel heading;
+    private JPanel main;
+    private JLabel welcomeLable;
+    private JButton backToLogin;
+
+    private static User user;
+
+    public AdminPanel(){
+        setTitle("Admin Dashboard");
+        setSize(400, 500);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setContentPane(main);
+        setup();
+//        setVisible(true);
+//        revalidate();
+
+    }
 
     public AdminPanel(User user) {
         setTitle("Admin Dashboard");
-        setSize(500, 300);
+        setSize(600, 500);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setContentPane(main);
 
-        mainPanel = new JPanel();
-        welcomeLabel = new JLabel("Welcome, " + user.getUsername() + " (Admin)");
-        mainPanel.add(welcomeLabel);
+        AdminPanel.user = user;
 
-        setContentPane(mainPanel);
+        setup();
         setVisible(true);
+//      revalidate();
+
+
     }
+
+    public User getUser(){
+        return user;
+    }
+
+    public void setup(){
+        welcomeLable.setText("Welcome, "+user.getUsername()+"("+user.getRole()+")");
+
+        courseManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new courseMPUI();
+            }
+        });
+        noticeManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                noticeMUI notice = new noticeMUI();
+            }
+        });
+        backToLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                dispose();
+            }
+        });
+    }
+
+
 }

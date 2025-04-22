@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Login extends JFrame {
     private JPanel mainPanel;
@@ -40,22 +41,24 @@ public class Login extends JFrame {
             return;
         }
 
-        String query = "SELECT role FROM users WHERE username = ? AND password = ?";
+        String query = "SELECT Password, Role FROM User WHERE Email = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
-            stmt.setString(2, password);
-
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Role role = Role.fromString(rs.getString("role"));
-                JOptionPane.showMessageDialog(this, "Login Successful!");
-
-                openDashboard(new User(username, role));
-                dispose();
+                String storedHash = rs.getString("password");
+                if (BCrypt.checkpw(password, storedHash)) {
+                    Role role = Role.fromString(rs.getString("role"));
+                    JOptionPane.showMessageDialog(this, "Login Successful!");
+                    openDashboard(new User(username, role));
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Credentials!");
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Credentials!");
             }
