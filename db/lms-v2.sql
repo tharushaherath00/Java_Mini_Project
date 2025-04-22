@@ -97,7 +97,7 @@ CREATE TABLE Student_Course (
     Course_ID VARCHAR(10),
     PRIMARY KEY (Student_ID, Course_ID),
     FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Marks (
@@ -117,7 +117,7 @@ CREATE TABLE Marks (
     End_practical DECIMAL(5,2),
     PRIMARY KEY (Stu_id, Course_code),
     FOREIGN KEY (Stu_id) REFERENCES Student(Student_ID),
-    FOREIGN KEY (Course_code) REFERENCES Course(Course_ID)
+    FOREIGN KEY (Course_code) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Atendance (
@@ -128,7 +128,7 @@ CREATE TABLE Atendance (
     Status ENUM('Present', 'Absent','Medical'),
     Date DATE,
     FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Medical (
@@ -143,7 +143,7 @@ CREATE TABLE Medical (
     Status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Approved',
     TO_ID VARCHAR(10),
     FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID),
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (TO_ID) REFERENCES Technical_Officer(TO_ID)
 );
 
