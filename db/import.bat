@@ -4,7 +4,7 @@ echo Starting MySQL database import...
 set MYSQL_PATH="C:\Program Files\MySQL\MySQL Server 8.0\bin"
 set USER=root
 set PASSWORD=root
-set SQL_FILE="lms.sql"
+set SQL_FILE="lms-v2.sql"
 
 if not exist %SQL_FILE% (
     echo Error: SQL file not found at %SQL_FILE%
