@@ -74,6 +74,13 @@ public class AdminPanel extends JFrame {
                 dispose();
             }
         });
+        userManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new UserMNG(user);
+            }
+        });
     }
 
 
