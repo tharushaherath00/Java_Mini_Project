@@ -54,15 +54,14 @@ public class lec_Marks  extends JFrame {
 
                     DefaultTableModel model=(DefaultTableModel) table1.getModel();
                     model.setRowCount(0);
-                    model.setColumnIdentifiers(new String[]{"Stu_id"});
+                    model.setColumnIdentifiers(new String[]{"Stu_id","CA_status"});
 
                     while(rs.next()){
                         String S_id=rs.getString("Stu_id");
                         model.addRow(new String[]{S_id});
 
                     }
-                    con.close();
-                    rs.close();
+
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
