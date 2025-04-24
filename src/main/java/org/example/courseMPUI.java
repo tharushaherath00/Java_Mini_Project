@@ -98,14 +98,14 @@ public class courseMPUI extends JFrame {
                         JOptionPane.showMessageDialog(null,"Course already exist");
                         return;
                     }else{
-                        try {
-                            Ccredit = Integer.parseInt(credit);
-                        } catch (NumberFormatException nfe) {
-                            JOptionPane.showMessageDialog(null, "Course credit must be a number.");
-                            return;
-                        }
+//                        try {
+//                            Ccredit = Integer.parseInt(credit);
+//                        } catch (NumberFormatException nfe) {
+//                            JOptionPane.showMessageDialog(null, "Course credit must be a number.");
+//                            return;
+//                        }
 
-//                       int Ccredit = Integer.parseInt(credit);
+                        Ccredit = validateCredit(credit);
                         pstmt = con.prepareStatement(query);
                         pstmt.setString(1,courseId.getText());
                         pstmt.setString(2,courseName.getText());
@@ -125,7 +125,10 @@ public class courseMPUI extends JFrame {
                             tableLoad();
                         }
                     }
-                }catch(SQLException a){
+                }catch(ValidationException u){
+                    JOptionPane.showMessageDialog(null,u.getMessage());
+                }
+                catch(SQLException a){
                     JOptionPane.showMessageDialog(null,a.getMessage());
                 }catch(Exception q){
                     JOptionPane.showMessageDialog(null,q.getMessage());
@@ -189,14 +192,14 @@ public class courseMPUI extends JFrame {
 //                        JOptionPane.showMessageDialog(null,"Course already exist");
 //                        return;
 //                    }
-                    try {
-                        Ccredit = Integer.parseInt(credit);
-                    } catch (NumberFormatException nfe) {
-                        JOptionPane.showMessageDialog(null, "Course credit must be a number.");
-                        return;
-                    }
-
+//                    try {
 //                        Ccredit = Integer.parseInt(credit);
+//                    } catch (NumberFormatException nfe) {
+//                        JOptionPane.showMessageDialog(null, "Course credit must be a number.");
+//                        return;
+//                    }
+
+                        Ccredit = validateCredit(credit);
                         pstmt = con.prepareStatement(query);
                         pstmt.setString(6,courseId.getText());
                         pstmt.setString(1,courseName.getText());
@@ -217,7 +220,10 @@ public class courseMPUI extends JFrame {
                             tableLoad();
                         }
 
-                }catch(SQLException a){
+                }catch(ValidationException u){
+                    JOptionPane.showMessageDialog(null,u.getMessage());
+                }
+                catch(SQLException a){
                     JOptionPane.showMessageDialog(null,a.getMessage());
                 }catch(Exception q){
                     JOptionPane.showMessageDialog(null,q.getMessage());
@@ -350,5 +356,24 @@ public class courseMPUI extends JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+    public class ValidationException extends Exception {
+        public ValidationException(String message) {
+            super(message);
+        }
+    }
+
+
+    private int validateCredit(String creditStr) throws ValidationException {
+        try {
+            int credit = Integer.parseInt(creditStr);
+            if (credit <= 0 || credit >= 5) {
+                throw new ValidationException("Course credit must be greater than 0 and less than 5.");
+            }
+            return credit;
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Course credit must be a number.");
+        }
+    }
+
 
 }
