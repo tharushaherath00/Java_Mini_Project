@@ -25,23 +25,17 @@ public class courseMPUI extends JFrame {
     private JTextField courseCredit;
     private JTextField courseName;
     private int selectRow;
-    DefaultTableModel dtm;
-//    private JRadioButton practical;
     private JComboBox type;
     private JLabel lectureId;
-//    private JTextField lecturer;
     private JComboBox department;
     private JLabel depId;
     private JComboBox lectureSelect;
 
+    DefaultTableModel dtm;
     Connection con;
-    Statement stmt;
     PreparedStatement pstmt;
     ResultSet rs;
     Lecturer selectedLecturer;
-    String lec;
-
-
 
     public courseMPUI() {
         setTitle("Course Management");
@@ -57,30 +51,35 @@ public class courseMPUI extends JFrame {
         department.addItem("ET");
         department.addItem("ICT");
         department.addItem("BST");
+        department.addItem("MDS");
         createTable();
         tableLoad();
+        setup();
         loadLecturers();
 
+//        lectureSelect.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                 selectedLecturer = (Lecturer) lectureSelect.getSelectedItem();
+//                if (selectedLecturer == null) {
+//                    JOptionPane.showMessageDialog(null, "Please select a lecturer.");
+//                    return;
+//                }
+//                lec = selectedLecturer.getId();
+//
+//            }
+//        });
+    }
 
+    public void setup(){
+
+        //course add action listner
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int Ccredit;
                 String credit = courseCredit.getText();
-//                String Id = courseId.getText();
-//                String name = courseName.getText();
-//                String Ctype = type.getSelectedItem().toString();
-//
-////                for radio button
-//
-////                if(practical.isSelected()){
-////                    type = "Practical";
-////                }else
-////                    type = "Theory";
-//
-//                String dep = department.getSelectedItem().toString();
-//                selectedLecturer = (Lecturer) lectureSelect.getSelectedItem();
-//                lec = selectedLecturer.getId();
+
 
                 String query = "INSERT INTO course(Course_ID,Course_Name,Course_Type,Credit,Dep_ID,Lecturer_ID) VALUES(?,?,?,?,?,?)";
                 String checkUser = "SELECT * FROM course WHERE Course_ID = ?";
@@ -98,12 +97,6 @@ public class courseMPUI extends JFrame {
                         JOptionPane.showMessageDialog(null,"Course already exist");
                         return;
                     }else{
-//                        try {
-//                            Ccredit = Integer.parseInt(credit);
-//                        } catch (NumberFormatException nfe) {
-//                            JOptionPane.showMessageDialog(null, "Course credit must be a number.");
-//                            return;
-//                        }
 
                         Ccredit = validateCredit(credit);
                         pstmt = con.prepareStatement(query);
@@ -135,49 +128,15 @@ public class courseMPUI extends JFrame {
                 }
             }
         });
-
-        table1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                dtm = (DefaultTableModel)table1.getModel();
-                selectRow = table1.getSelectedRow();
-
-                String cId = dtm.getValueAt(selectRow,0).toString();
-                courseId.setText(cId);
-                courseName.setText(dtm.getValueAt(selectRow,1).toString());
-                type.setSelectedItem(dtm.getValueAt(selectRow,3));
-                courseCredit.setText(dtm.getValueAt(selectRow,2).toString());
-//                lectureSelect.setSelectedItem(dtm.getValueAt(selectRow,4));
-                department.setSelectedItem(dtm.getValueAt(selectRow,5));
-
-
-
-
-
-            }
-        });
+        //Course update action listner
         update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                String Id = courseId.getText();
-//                String name = courseName.getText();
-//                String Ctype = type.getSelectedItem().toString();
                 int Ccredit;
                 String credit = courseCredit.getText();
-//                for radio button
-
-//                if(practical.isSelected()){
-//                    type = "Practical";
-//                }else
-//                    type = "Theory";
-
-//                String dep = department.getSelectedItem().toString();
-//                selectedLecturer = (Lecturer) lectureSelect.getSelectedItem();
-//                lec = selectedLecturer.getId();
 
                 String query = "UPDATE course SET Course_Name = ?,Course_Type = ?,Credit = ?,Lecturer_ID = ?,Dep_ID = ? WHERE Course_ID = ?";
-                //String checkUser = "SELECT * FROM course WHERE c_id = ?";
+
                 if(courseId.getText().isEmpty()||courseName.getText().isEmpty()||courseCredit.getText().isEmpty()||type.getSelectedItem()==null||department.getSelectedItem()==null||lectureSelect.getSelectedItem()==null){
                     JOptionPane.showMessageDialog(null,"Please fill in all the fields.");
                     return;
@@ -185,40 +144,28 @@ public class courseMPUI extends JFrame {
                 try{
                     con = Database.getConnection();
                     selectedLecturer = (Lecturer) lectureSelect.getSelectedItem();
-                    //pstmt =con.prepareStatement(checkUser);
-                    //pstmt.setString(1,Id);
-                    //rs = pstmt.executeQuery();
-//                    if(rs.next()){
-//                        JOptionPane.showMessageDialog(null,"Course already exist");
-//                        return;
-//                    }
-//                    try {
-//                        Ccredit = Integer.parseInt(credit);
-//                    } catch (NumberFormatException nfe) {
-//                        JOptionPane.showMessageDialog(null, "Course credit must be a number.");
-//                        return;
-//                    }
 
-                        Ccredit = validateCredit(credit);
-                        pstmt = con.prepareStatement(query);
-                        pstmt.setString(6,courseId.getText());
-                        pstmt.setString(1,courseName.getText());
-                        pstmt.setString(2,type.getSelectedItem().toString());
-                        pstmt.setInt(3,Ccredit);
-                        pstmt.setString(4,selectedLecturer.getId());
-                        pstmt.setString(5,department.getSelectedItem().toString());
 
-                        int i = pstmt.executeUpdate();
-                        if(i>0) {
-                            JOptionPane.showMessageDialog(null, "Course Updated successfully");
-                            courseId.setText("");
-                            courseName.setText("");
-                            courseCredit.setText("");
-                            type.setSelectedItem(null);
-                            department.setSelectedItem(null);
-                            lectureSelect.setSelectedItem(null);
-                            tableLoad();
-                        }
+                    Ccredit = validateCredit(credit);
+                    pstmt = con.prepareStatement(query);
+                    pstmt.setString(6,courseId.getText());
+                    pstmt.setString(1,courseName.getText());
+                    pstmt.setString(2,type.getSelectedItem().toString());
+                    pstmt.setInt(3,Ccredit);
+                    pstmt.setString(4,selectedLecturer.getId());
+                    pstmt.setString(5,department.getSelectedItem().toString());
+
+                    int i = pstmt.executeUpdate();
+                    if(i>0) {
+                        JOptionPane.showMessageDialog(null, "Course Updated successfully");
+                        courseId.setText("");
+                        courseName.setText("");
+                        courseCredit.setText("");
+                        type.setSelectedItem(null);
+                        department.setSelectedItem(null);
+                        lectureSelect.setSelectedItem(null);
+                        tableLoad();
+                    }
 
                 }catch(ValidationException u){
                     JOptionPane.showMessageDialog(null,u.getMessage());
@@ -230,13 +177,12 @@ public class courseMPUI extends JFrame {
                 }
             }
         });
+
+        //Course delete action listner
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                String Id = courseId.getText();
-//                String name = courseName.getText();
-//                String Ctype = type.getSelectedItem().toString();
-//                String credit = courseCredit.getText();
+
                 String query = "DELETE FROM course WHERE Course_ID = ?";
                 if(courseId.getText().isEmpty()){
                     JOptionPane.showMessageDialog(null,"Please provide Course Id to delete");
@@ -266,6 +212,30 @@ public class courseMPUI extends JFrame {
 
             }
         });
+
+        //load data to table
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                dtm = (DefaultTableModel)table1.getModel();
+                selectRow = table1.getSelectedRow();
+
+                String cId = dtm.getValueAt(selectRow,0).toString();
+                courseId.setText(cId);
+                courseName.setText(dtm.getValueAt(selectRow,1).toString());
+                type.setSelectedItem(dtm.getValueAt(selectRow,3));
+                courseCredit.setText(dtm.getValueAt(selectRow,2).toString());
+//                lectureSelect.setSelectedItem(dtm.getValueAt(selectRow,4));
+                department.setSelectedItem(dtm.getValueAt(selectRow,5));
+
+
+
+
+
+            }
+        });
+        //Back to admin panel
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -274,18 +244,6 @@ public class courseMPUI extends JFrame {
                 adminPanel.setVisible(true);
             }
         });
-//        lectureSelect.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                 selectedLecturer = (Lecturer) lectureSelect.getSelectedItem();
-//                if (selectedLecturer == null) {
-//                    JOptionPane.showMessageDialog(null, "Please select a lecturer.");
-//                    return;
-//                }
-//                lec = selectedLecturer.getId();
-//
-//            }
-//        });
     }
     public void createTable(){
         table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType","Lecturer_ID","Dep_ID"}));
@@ -309,21 +267,12 @@ public class courseMPUI extends JFrame {
             count = rsmd.getColumnCount();
             DefaultTableModel dtm = (DefaultTableModel)table1.getModel();
             dtm.setRowCount(0);
-//            while(rs.next()){
-//                Vector v = new Vector();
-//                for(int i = 1;i<=count;i++){
-//                    v.add(rs.getString(1));
-//                    v.add(rs.getString(2));
-//                    v.add((rs.getString(3)));
-//                    v.add(rs.getInt(4));
-//                }
-//                dtm.addRow(v);
-//            }
+
             while(rs.next()){
                 Vector<String> v = new Vector<>();
                 v.add(rs.getString("Course_ID"));
                 v.add(rs.getString("Course_Name"));
-                v.add(String.valueOf(rs.getInt("Credit"))); // convert to String for consistency
+                v.add(String.valueOf(rs.getInt("Credit")));
                 v.add(rs.getString("Course_Type"));
                 v.add(rs.getString("Lecturer_ID"));
                 v.add(rs.getString("Dep_ID"));
@@ -335,9 +284,9 @@ public class courseMPUI extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new courseMPUI();
-    }
+//    public static void main(String[] args) {
+//        new courseMPUI();
+//    }
 
     public void loadLecturers() {
         try {

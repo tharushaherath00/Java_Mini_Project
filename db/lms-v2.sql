@@ -160,7 +160,7 @@ CREATE TABLE Medical (
 INSERT INTO Department (Dep_ID, Dep_Name) VALUES
 ('ICT', 'Information and Communication Technology'),
 ('ET', 'Engineering Technology'),
-('BT', 'Bio System Technology'),
+('BST', 'Bio System Technology'),
 ('MDS', 'Multideceplinary');
 
 INSERT INTO User (NIC, Name, Password, Email, DOB, Department_ID, Department, Role) VALUES
