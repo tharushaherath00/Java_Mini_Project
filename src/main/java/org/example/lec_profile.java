@@ -19,7 +19,9 @@ public class lec_profile  extends JFrame {
 
         setTitle("Lecture Profile");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 400, 500);
+//        setBounds(100, 100, 400, 500);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
         setContentPane(Main_p);
         setVisible(true);
 
