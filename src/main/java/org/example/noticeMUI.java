@@ -121,7 +121,7 @@ public class noticeMUI extends ManagementUI {
                         pstmt.setString(1,dtm.getValueAt(selectRow,0).toString());
                         int i = pstmt.executeUpdate();
                         if(i>0){
-                            JOptionPane.showMessageDialog(null,"Notoce deleted successfully");
+                            JOptionPane.showMessageDialog(null,"Notice deleted successfully");
                         }else{
                             JOptionPane.showMessageDialog(null,"Error in deletion");
                             return;

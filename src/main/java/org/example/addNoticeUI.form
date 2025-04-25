@@ -93,6 +93,7 @@
                     <properties>
                       <background color="-985864"/>
                       <foreground color="-16777216"/>
+                      <opaque value="true"/>
                     </properties>
                   </component>
                 </children>
@@ -133,8 +134,12 @@
                 <properties>
                   <background color="-769226"/>
                   <borderPainted value="false"/>
+                  <contentAreaFilled value="true"/>
+                  <font name="JetBrains Mono" size="14" style="2"/>
                   <foreground color="-16777216"/>
-                  <margin top="10" left="10" bottom="10" right="10"/>
+                  <icon value="clean (1).png"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <opaque value="true"/>
                   <text value="Clear"/>
                 </properties>
               </component>
@@ -146,9 +151,10 @@
                   <background color="-11751344"/>
                   <borderPainted value="false"/>
                   <contentAreaFilled value="true"/>
-                  <font name="JetBrains Mono" size="14" style="1"/>
+                  <font name="JetBrains Mono" size="14" style="2"/>
                   <foreground color="-16777216"/>
-                  <margin top="10" left="10" bottom="10" right="10"/>
+                  <icon value="paper-plane (1).png"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
                   <opaque value="true"/>
                   <text value="Publish"/>
                 </properties>

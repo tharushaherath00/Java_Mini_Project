@@ -244,6 +244,7 @@
             </constraints>
             <properties>
               <background color="-6381922"/>
+              <font name="JetBrains Mono" size="14" style="0"/>
               <opaque value="true"/>
             </properties>
           </component>
@@ -255,6 +256,7 @@
             </constraints>
             <properties>
               <background color="-6381922"/>
+              <font name="JetBrains Mono" size="14" style="0"/>
               <opaque value="true"/>
             </properties>
           </component>
@@ -264,6 +266,7 @@
             </constraints>
             <properties>
               <background color="-6447715"/>
+              <font name="JetBrains Mono" size="14" style="0"/>
             </properties>
           </component>
           <component id="eafc7" class="javax.swing.JLabel" binding="lectureId">
@@ -282,6 +285,7 @@
             </constraints>
             <properties>
               <background color="-6447715"/>
+              <font name="JetBrains Mono" size="14" style="0"/>
             </properties>
           </component>
           <component id="948f5" class="javax.swing.JLabel" binding="depId">
@@ -300,6 +304,7 @@
             </constraints>
             <properties>
               <background color="-6447715"/>
+              <font name="JetBrains Mono" size="14" style="0"/>
             </properties>
           </component>
         </children>
