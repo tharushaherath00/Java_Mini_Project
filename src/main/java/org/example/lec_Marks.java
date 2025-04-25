@@ -237,6 +237,15 @@ public class lec_Marks  extends JFrame {
 
                 String status = (requiredPercentage>=50) ? "Pass" : "Fail";
                 model.addRow(new String[]{stuId, status});
+                String updateQuery = "UPDATE marks SET CA_Status = ? WHERE Course_code = ? AND Stu_id = ?";
+                PreparedStatement updatePs = con.prepareStatement(updateQuery);
+                updatePs.setString(1, status);
+                updatePs.setString(2, courseCode);
+                updatePs.setString(3, stuId);
+                updatePs.executeUpdate();
+                updatePs.close();
+
+
             }
 
             rs.close();
