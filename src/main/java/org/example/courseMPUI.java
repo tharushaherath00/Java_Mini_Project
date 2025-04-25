@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.Vector;
 
-public class courseMPUI extends JFrame {
+public class courseMPUI extends ManagementUI {
     private JTable table1;
     private JLabel heading;
     private JPanel main;
@@ -38,11 +38,14 @@ public class courseMPUI extends JFrame {
     Lecturer selectedLecturer;
 
     public courseMPUI() {
-        setTitle("Course Management");
-        setSize(1000,500);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        super("Course Management",600,500);
+
+//        setTitle("Course Management");
+//        setSize(1000,500);
+//        setResizable(false);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null);
+
         setContentPane(main);
         setVisible(true);
         type.addItem("Practical");
@@ -52,7 +55,8 @@ public class courseMPUI extends JFrame {
         department.addItem("ICT");
         department.addItem("BST");
         department.addItem("MDS");
-        createTable();
+        String[] columns = {"CourseId", "CourseName", "CourseCredit", "CourseType", "Lecturer_ID", "Dep_ID"};
+        createTable(table1,columns);
         tableLoad();
         setup();
         loadLecturers();
@@ -245,17 +249,17 @@ public class courseMPUI extends JFrame {
             }
         });
     }
-    public void createTable(){
-        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType","Lecturer_ID","Dep_ID"}));
-        table1.setRowHeight(25); // Make rows taller
-        table1.setShowGrid(true);
-        table1.setGridColor(Color.LIGHT_GRAY);
-        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
-        JTableHeader header = table1.getTableHeader();
-        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
-        header.setForeground(Color.WHITE);
-    }
+//    public void createTable(){
+//        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"CourseId","CourseName","CourseCredit","CourseType","Lecturer_ID","Dep_ID"}));
+//        table1.setRowHeight(25); // Make rows taller
+//        table1.setShowGrid(true);
+//        table1.setGridColor(Color.LIGHT_GRAY);
+//        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+//        JTableHeader header = table1.getTableHeader();
+//        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
+//        header.setForeground(Color.WHITE);
+//    }
 
     public void tableLoad(){
         int count;
