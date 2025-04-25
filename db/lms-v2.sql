@@ -2509,3 +2509,15 @@ VALUES
 ('S019', 'ICT2152', '2025-02-01', 'Submitted medical certificate', 's019_20250201.jpg', 'image/jpeg', 'Approved', 'TO01'),
 ('S019', 'ICT2152', '2025-03-01', 'Submitted medical certificate', 's019_20250301.jpg', 'image/jpeg', 'Approved', 'TO01'),
 ('S019', 'ICT2152', '2025-04-05', 'Submitted medical certificate', 's019_20250405.jpg', 'image/jpeg', 'Approved', 'TO01');
+
+INSERT INTO Timetable (Timetable_ID, Course_ID, Day, Start_Time, End_Time, Room, Lecturer_ID) VALUES
+(1, 'ICT2113', 'Monday', '08:00:00', '10:00:00', 'LR101', 'L001'),
+(2, 'ICT2122', 'Monday', '10:30:00', '12:30:00', 'LR102', 'L002'),
+(3, 'ICT2133', 'Tuesday', '13:00:00', '15:00:00', 'LAB01', 'L003'),
+(4, 'ICT2142', 'Wednesday', '09:00:00', '11:00:00', 'LR103', 'L004'),
+(5, 'ICT2152', 'Thursday', '14:00:00', '16:00:00', 'LR104', 'L001'),
+(6, 'ENG2122', 'Friday', '08:30:00', '10:30:00', 'LR105', 'L002'),
+(7, 'ICT2113', 'Wednesday', '11:30:00', '13:30:00', 'LAB02', 'L001'),
+(8, 'ICT2122', 'Thursday', '09:00:00', '11:00:00', 'LR106', 'L002'),
+(9, 'ICT2133', 'Friday', '13:00:00', '15:00:00', 'LAB03', 'L003'),
+(10, 'ICT2142', 'Tuesday', '10:00:00', '12:00:00', 'LR107', 'L004');
