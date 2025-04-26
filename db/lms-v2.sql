@@ -147,6 +147,15 @@ CREATE TABLE Medical (
     FOREIGN KEY (TO_ID) REFERENCES Technical_Officer(TO_ID)
 );
 
+CREATE TABLE files (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    file_id VARCHAR(50) NOT NULL UNIQUE,
+    filename VARCHAR(255) NOT NULL,
+    course_id VARCHAR(50) NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES Course(Course_ID)
+);
+
 INSERT INTO Department (Dep_ID, Dep_Name) VALUES
 ('ICT', 'Information and Communication Technology'),
 ('ET', 'Engineering Technology'),
