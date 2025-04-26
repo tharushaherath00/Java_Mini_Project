@@ -268,34 +268,38 @@
           </component>
           <component id="eafc7" class="javax.swing.JLabel" binding="lectureId">
             <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="JetBrains Mono" size="18" style="2"/>
               <foreground color="-16777216"/>
               <text value="Lecturer Id"/>
             </properties>
-          </component>
-          <component id="4ba39" class="javax.swing.JTextField" binding="lecturer">
-            <constraints>
-              <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
           </component>
           <component id="a5f1" class="javax.swing.JComboBox" binding="department">
             <constraints>
               <grid row="6" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-6447715"/>
+            </properties>
           </component>
           <component id="948f5" class="javax.swing.JLabel" binding="depId">
             <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="JetBrains Mono" size="18" style="2"/>
               <foreground color="-16777216"/>
               <text value="Department"/>
+            </properties>
+          </component>
+          <component id="c4c" class="javax.swing.JComboBox" binding="lectureSelect">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-6447715"/>
             </properties>
           </component>
         </children>
