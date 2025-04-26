@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.Vector;
 
-public class noticeMUI extends ManagementUI {
+public class noticeMUI extends ManagementUI{
     private JLabel heading;
     private JTable table1;
     private JTextArea textArea1;
@@ -19,10 +19,10 @@ public class noticeMUI extends ManagementUI {
     private JButton delete;
     private JPanel noticeManagementPanel;
     private JButton backtoAdmin;
-    private DefaultTableModel dtm;
-    private Connection con;
-    private PreparedStatement pstmt;
-    private ResultSet rs;
+    //private DefaultTableModel dtm;
+    //private Connection con;
+    //private PreparedStatement pstmt;
+    //private ResultSet rs;
     private int selectRow;
     private String query;
     private String publisherName;

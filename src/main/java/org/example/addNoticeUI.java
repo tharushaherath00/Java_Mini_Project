@@ -18,7 +18,7 @@ public class addNoticeUI extends JFrame {
     private JTextField titleField;
     private JTextArea noticeField;
     private JButton clear;
-    private JPanel headingPanel;
+//    private JPanel headingPanel;
     private String userName = new AdminPanel().getUser().getUsername();
     private static String userid;
 
@@ -32,19 +32,27 @@ public class addNoticeUI extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(addNoticePanel);
-//        headingPanel.setSize(500,100);
         setVisible(true);
         setLocationRelativeTo(null);
         comboBox1.addItem("Student");
         comboBox1.addItem("Lecturer");
-//        comboBox1.addItem("Admin");
-//        comboBox1.addItem("Dean");
         comboBox1.addItem("All");
+
 //        System.out.println(new AdminPanel().getUser().getUsername());
 //        headingPanel.setSize(600,200);
+
         getUserId();
+        setup();
 
 
+    }
+
+//    public static void main(String[] args) {
+//        new addNoticeUI();
+//    }
+
+    public void setup(){
+        //back button listner
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +60,8 @@ public class addNoticeUI extends JFrame {
                 noticeMUI notice = new noticeMUI();
             }
         });
+
+        //publish button listener
         publish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,6 +101,8 @@ public class addNoticeUI extends JFrame {
 
             }
         });
+
+        //clear button listner
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,10 +112,6 @@ public class addNoticeUI extends JFrame {
             }
         });
     }
-
-//    public static void main(String[] args) {
-//        new addNoticeUI();
-//    }
 
     public void getUserId() {
         String query = "SELECT * FROM user WHERE Email =?";

@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.Vector;
 
-public class courseMPUI extends ManagementUI {
+public class courseMPUI extends ManagementUI{
     private JTable table1;
     private JLabel heading;
     private JPanel main;
@@ -31,11 +31,11 @@ public class courseMPUI extends ManagementUI {
     private JLabel depId;
     private JComboBox lectureSelect;
 
-    DefaultTableModel dtm;
-    Connection con;
-    PreparedStatement pstmt;
-    ResultSet rs;
-    Lecturer selectedLecturer;
+//    DefaultTableModel dtm;
+//    Connection con;
+//    PreparedStatement pstmt;
+//    ResultSet rs;
+      Lecturer selectedLecturer;
 
     public courseMPUI() {
         super("Course Management",600,500);

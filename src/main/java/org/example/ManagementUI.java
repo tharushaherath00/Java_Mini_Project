@@ -4,8 +4,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public abstract class ManagementUI extends JFrame {
+    protected DefaultTableModel dtm;
+    protected Connection con;
+    protected PreparedStatement pstmt;
+    protected ResultSet rs;
+
     public ManagementUI(String title,int width,int height){
         setTitle(title);
         setSize(width, height);
