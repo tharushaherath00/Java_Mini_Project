@@ -1,4 +1,5 @@
 package org.example;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +29,6 @@ public class profileView {
 
     private Connection myconn;
 
-    private void createUIComponents() {
-        // Do not delete - required for IntelliJ GUI Designer
-    }
-
     public profileView(User user) {
         try {
             myconn = Database.getConnection();
@@ -41,20 +38,19 @@ public class profileView {
             JOptionPane.showMessageDialog(null, "Database connection error.");
         }
 
-
+        // ✅ Maintain Medical Button ActionListener
         maintainMedicalButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
+                ViewMedical viewMedicalForm = new ViewMedical();
                 JFrame frame = new JFrame("Maintain Medical Records");
-                frame.setContentPane(new ViewMedical().getMainPanel());
+                frame.setContentPane(viewMedicalForm.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
-                frame.setLocationRelativeTo(null); // Center the frame
+                frame.setLocationRelativeTo(null); // Center the window
                 frame.setVisible(true);
             }
         });
-
-
-
 
         ViewNoticebutton.addActionListener(e -> openAddMedical());
         updateMedicalButton.addActionListener(e -> openUpdateMedical());
@@ -75,7 +71,7 @@ public class profileView {
 
         viewTimeTableButton.addActionListener(e -> openViewTimeTable());
 
-        // Show in frame (optional if already handled in caller)
+        // Show this form
         JFrame frame = new JFrame("Technical Officer Profile");
         frame.setContentPane(main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
