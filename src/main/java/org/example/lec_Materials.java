@@ -20,6 +20,8 @@ public class lec_Materials extends JFrame {
     private JButton resetButton;
     private JTable table1;
     private JButton removeButton;
+    private MyDBConnecter mdc;
+    private Connection con;
 
     public lec_Materials() {
         setTitle("Lecture Materials");
@@ -28,10 +30,9 @@ public class lec_Materials extends JFrame {
         setContentPane(Main_p);
         setVisible(true);
 
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/tec_lms";
-        String user = "root";
-        String password = "Kali00@#12";
+        mdc = new MyDBConnecter();
+        con = mdc.getMyConnection();
+
 
         backbtn.addActionListener(e -> {
             lec_Dash dash = new lec_Dash();
@@ -57,9 +58,6 @@ public class lec_Materials extends JFrame {
             String savePath = "C:/Users/tharu/Desktop/Lec_Materials/" + selected + "_" + file.getName();
 
             try {
-                Class.forName(driver);
-                Connection con = DriverManager.getConnection(url, user, password);
-
                 PreparedStatement ps = con.prepareStatement("UPDATE course SET Course_Materials = ?, File_Name = ? WHERE Course_ID = ?");
                 FileInputStream fis = new FileInputStream(file);
                 ps.setBinaryStream(1, fis, (int) file.length());
@@ -113,8 +111,6 @@ public class lec_Materials extends JFrame {
 
 
                 try {
-                    Class.forName(driver);
-                    Connection con = DriverManager.getConnection(url, user, password);
 
                     String query = "UPDATE course SET Course_Materials = NULL WHERE Course_ID = ?";
                     PreparedStatement ps = con.prepareStatement(query);
@@ -129,8 +125,6 @@ public class lec_Materials extends JFrame {
                         JOptionPane.showMessageDialog(null, "No course material found to remove.");
                     }
 
-                    ps.close();
-                    con.close();
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -142,14 +136,8 @@ public class lec_Materials extends JFrame {
     }
 
     private void loadTable() {
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/tec_lms";
-        String user = "root";
-        String password = "Kali00@#12";
 
         try {
-            Class.forName(driver);
-            Connection con = DriverManager.getConnection(url, user, password);
             String query = "SELECT Course_ID, File_Name FROM course WHERE Course_Materials IS NOT NULL AND File_Name IS NOT NULL";
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -160,9 +148,6 @@ public class lec_Materials extends JFrame {
             }
             table1.setModel(model);
 
-            con.close();
-            ps.close();
-            rs.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
