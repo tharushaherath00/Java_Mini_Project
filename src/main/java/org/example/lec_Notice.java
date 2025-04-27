@@ -12,6 +12,8 @@ public class lec_Notice extends JFrame {
     private JTable table1;
     private JPanel Main_P;
     private JButton backbtn;
+    private MyDBConnecter mdc;
+    private Connection con;
 
     public lec_Notice() {
         setTitle("Lecture Materials");
@@ -20,6 +22,8 @@ public class lec_Notice extends JFrame {
         setContentPane(Main_P);
         setVisible(true);
 
+        mdc = new MyDBConnecter();
+        con = mdc.getMyConnection();
         backbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,14 +33,8 @@ public class lec_Notice extends JFrame {
             }
         });
 
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/tec_lms";
-        String user = "root";
-        String password = "Kali00@#12";
 
         try {
-            Class.forName(driver);
-            Connection con= DriverManager.getConnection(url,user,password);
 
             String query = "SELECT * FROM notices";
             PreparedStatement ps = con.prepareStatement(query);
@@ -58,9 +56,6 @@ public class lec_Notice extends JFrame {
                 String target_role = rs.getString("target_role");
                 model.addRow(new String[]{notice_id, title, content, posted_date, target_role});
             }
-            con.close();
-            rs.close();
-            ps.close();
 
 
 
