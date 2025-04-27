@@ -17,9 +17,10 @@ public class Login extends JFrame {
 
     public Login() {
         setTitle("User Login");
-        setSize(400, 200);
+//        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
+        pack();
         setLocationRelativeTo(null);
 
         loginButton.addActionListener(new ActionListener() {
