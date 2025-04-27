@@ -4,19 +4,28 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public class ViewMedical {
-    private JPanel main,topic,medicalview;
+public class ViewMedical extends JFrame {
+    private JPanel main;
     private JTextField studentid, courseid, medicalid, dateField, reasonField;
     private JComboBox<String> status;
     private JButton addMedicalButton, updateMedicalStatusButton, deleteMedicalStatusButton, clearButton;
     private JTable medicalTable;
     private JButton mainMenuButton;
+    private JPanel topic;
     private JPanel MedicalView;
     private JPanel buttons;
     private JPanel last;
 
     public ViewMedical() {
+        setTitle("Maintain Medical");
+        setSize(600,500);
+        setContentPane(main);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
         // Button to add a new medical record
         addMedicalButton.addActionListener(new ActionListener() {
             @Override
@@ -62,6 +71,16 @@ public class ViewMedical {
 
         // Load all medical data into the table on form load
         loadMedicalData();
+
+        // Add selection listener to load data into fields when selecting a row in the table
+        medicalTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting() && medicalTable.getSelectedRow() != -1) {
+                    loadSelectedRowData();
+                }
+            }
+        });
     }
 
     // Method to load all records from the Medical table
@@ -164,6 +183,17 @@ public class ViewMedical {
         reasonField.setText("");
         status.setSelectedIndex(0);
         medicalTable.clearSelection();
+    }
+
+    // Load the selected row's data into the fields
+    private void loadSelectedRowData() {
+        int selectedRow = medicalTable.getSelectedRow();
+        medicalid.setText(medicalTable.getValueAt(selectedRow, 0).toString());
+        studentid.setText(medicalTable.getValueAt(selectedRow, 1).toString());
+        courseid.setText(medicalTable.getValueAt(selectedRow, 2).toString());
+        dateField.setText(medicalTable.getValueAt(selectedRow, 3).toString());
+        reasonField.setText(medicalTable.getValueAt(selectedRow, 4).toString());
+        status.setSelectedItem(medicalTable.getValueAt(selectedRow, 5).toString());
     }
 
     // Allow other classes to get the main panel for display
