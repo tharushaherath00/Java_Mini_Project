@@ -9,7 +9,7 @@ CREATE TABLE User (
     Password VARCHAR(100) NOT NULL,
     Email VARCHAR(100) UNIQUE NOT NULL,
     DOB DATE NOT NULL,
-    Department_ID ENUM('ICT', 'BT', 'ET', 'MDS') NOT NULL,
+    Department_ID ENUM('ICT', 'BST', 'ET', 'MDS') NOT NULL,
     Department VARCHAR(100) NOT NULL,
     Role ENUM('admin', 'Lecturer', 'Dean', 'Student', 'Technical Officer') NOT NULL
 );
