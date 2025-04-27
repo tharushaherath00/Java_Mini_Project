@@ -18,7 +18,7 @@ public class attendance extends JFrame{
     private JButton more80withMed;
     private JButton less80withMed;
     private JPanel mainAttendance;
-    private JButton individuals;
+    private JButton mainMenue;
     DefaultTableModel dtm;
     Connection conn;
     PreparedStatement pstmt;
