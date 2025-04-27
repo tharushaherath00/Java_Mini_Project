@@ -17,9 +17,10 @@ public class Login extends JFrame {
 
     public Login() {
         setTitle("User Login");
-        setSize(400, 200);
+//        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
+        pack();
         setLocationRelativeTo(null);
 
         loginButton.addActionListener(new ActionListener() {
@@ -73,6 +74,7 @@ public class Login extends JFrame {
         switch (user.getRole()) {
             case ADMIN -> new AdminPanel(user);
             case STUDENT -> new StudentPanel(user);
+            case TECHNICAL_OFFICER -> new profileView(user);
             default -> JOptionPane.showMessageDialog(this, "Role not implemented.");
         }
     }

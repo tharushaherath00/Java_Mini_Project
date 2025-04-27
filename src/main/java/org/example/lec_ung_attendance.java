@@ -15,6 +15,8 @@ public class lec_ung_attendance extends JFrame {
     private JTable table1;
     private JButton backbtn;
     private JComboBox comboBox1;
+    private MyDBConnecter mdc;
+    private Connection con;
 
     public lec_ung_attendance() {
 
@@ -24,6 +26,8 @@ public class lec_ung_attendance extends JFrame {
         setContentPane(Main_P);
         setVisible(true);
 
+        mdc = new MyDBConnecter();
+        con = mdc.getMyConnection();
 
         viewButton.addActionListener(new ActionListener() {
             @Override
@@ -36,17 +40,9 @@ public class lec_ung_attendance extends JFrame {
                 }
 
 
-                String driver = "com.mysql.cj.jdbc.Driver";;
-                String url = "jdbc:mysql://localhost:3306/tec_lms";
-                String user = "root";
-                String password = "Kali00@#12";
-
-
                 try{
-                    Class.forName(driver);
-                    Connection conn = DriverManager.getConnection(url, user, password);
                     String sql = "select Course_Name,Days_Present,Days_Medical,Attendance_Percentage from courseattendancesummary  where Course_ID=?";
-                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    PreparedStatement stmt = con.prepareStatement(sql);
                     stmt.setString(1, index);
                     ResultSet rs = stmt.executeQuery();
 
@@ -63,7 +59,6 @@ public class lec_ung_attendance extends JFrame {
                         model.addRow(new Object[]{Course_Name,Days_Present,Days_Medical,Attendance_Percentage});
                     }
                     stmt.close();
-                    conn.close();
                     rs.close();
 
 
