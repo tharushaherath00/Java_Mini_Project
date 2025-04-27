@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UndergraduateViewCourseDetails extends JFrame {
     private JTable table;
@@ -16,6 +18,8 @@ public class UndergraduateViewCourseDetails extends JFrame {
     private JComboBox<String> materialComboBox;
     private JLabel downloadLinkLabel;
     private String userId;
+
+    private Map<String, String> courseNameToIdMap = new HashMap<>();
 
     public UndergraduateViewCourseDetails(String userId) {
         this.userId = userId;
@@ -54,7 +58,6 @@ public class UndergraduateViewCourseDetails extends JFrame {
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Course ID");
         tableModel.addColumn("Course Name");
@@ -75,7 +78,6 @@ public class UndergraduateViewCourseDetails extends JFrame {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(55, 80, 55)));
 
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
@@ -122,34 +124,24 @@ public class UndergraduateViewCourseDetails extends JFrame {
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new UndergraduateDashboard(userId);
-                dispose();
-            }
+
+        backButton.addActionListener(e -> {
+            new UndergraduateDashboard(userId);
+            dispose();
         });
 
-        courseComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadMaterialsForSelectedCourse();
-            }
-        });
+        courseComboBox.addActionListener(e -> loadMaterialsForSelectedCourse());
 
-        downloadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedCourse = (String) courseComboBox.getSelectedItem();
-                String selectedMaterial = (String) materialComboBox.getSelectedItem();
+        downloadButton.addActionListener(e -> {
+            String selectedCourseName = (String) courseComboBox.getSelectedItem();
+            String selectedMaterial = (String) materialComboBox.getSelectedItem();
 
-                if (selectedCourse != null && selectedMaterial != null) {
-                    String downloadLink = downloadCourseMaterials(selectedCourse, selectedMaterial);
-                    downloadLinkLabel.setText("<html><a href='" + downloadLink + "'>" + downloadLink + "</a></html>");
-                } else {
-                    JOptionPane.showMessageDialog(UndergraduateViewCourseDetails.this,
-                            "Please select both a course and a material type.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            if (selectedCourseName != null && selectedMaterial != null) {
+                String downloadLink = downloadCourseMaterials(selectedCourseName, selectedMaterial);
+                downloadLinkLabel.setText("<html><a href='" + downloadLink + "'>" + downloadLink + "</a></html>");
+            } else {
+                JOptionPane.showMessageDialog(UndergraduateViewCourseDetails.this,
+                        "Please select both a course and a material type.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
@@ -162,8 +154,11 @@ public class UndergraduateViewCourseDetails extends JFrame {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                String courseId = rs.getString("Course_ID");
                 String courseName = rs.getString("Course_Name");
                 courseComboBox.addItem(courseName);
+                courseNameToIdMap.put(courseName, courseId);
+                tableModel.addRow(new Object[]{courseId, courseName});
             }
 
         } catch (SQLException e) {
@@ -172,22 +167,23 @@ public class UndergraduateViewCourseDetails extends JFrame {
     }
 
     private void loadMaterialsForSelectedCourse() {
-        String selectedCourse = (String) courseComboBox.getSelectedItem();
-
+        String selectedCourseName = (String) courseComboBox.getSelectedItem();
         materialComboBox.removeAllItems();
 
-        if (selectedCourse != null) {
-            String sql = "SELECT Material_Name FROM Material WHERE Course_Name = ?";
+        if (selectedCourseName != null) {
+            String selectedCourseId = courseNameToIdMap.get(selectedCourseName);
+
+            String sql = "SELECT filename FROM files WHERE course_id = ?";
 
             try (Connection conn = Database.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                stmt.setString(1, selectedCourse);
+                stmt.setString(1, selectedCourseId);
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    String materialName = rs.getString("Material_Name");
-                    materialComboBox.addItem(materialName);
+                    String filename = rs.getString("filename");
+                    materialComboBox.addItem(filename);
                 }
 
             } catch (SQLException e) {
@@ -197,7 +193,6 @@ public class UndergraduateViewCourseDetails extends JFrame {
     }
 
     private String downloadCourseMaterials(String courseName, String materialType) {
-
         String coursePart = courseName.replace(" ", "_");
         String materialPart = materialType.replace(" ", "_");
         return "http://example.com/download/" + coursePart + "/" + materialPart;
