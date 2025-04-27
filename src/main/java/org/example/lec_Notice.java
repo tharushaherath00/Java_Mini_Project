@@ -81,6 +81,7 @@ public class lec_Notice extends JFrame {
     }
 
     public static void main(String[] args) {
+
         new lec_Notice();
     }
 }
