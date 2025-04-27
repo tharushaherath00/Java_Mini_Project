@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.Vector;
 
-public class noticeMUI extends JFrame {
+public class noticeMUI extends ManagementUI{
     private JLabel heading;
     private JTable table1;
     private JTextArea textArea1;
@@ -19,28 +19,30 @@ public class noticeMUI extends JFrame {
     private JButton delete;
     private JPanel noticeManagementPanel;
     private JButton backtoAdmin;
-    private DefaultTableModel dtm;
-    private Connection con;
-    private PreparedStatement pstmt;
-    private ResultSet rs;
+    //private DefaultTableModel dtm;
+    //private Connection con;
+    //private PreparedStatement pstmt;
+    //private ResultSet rs;
     private int selectRow;
     private String query;
     private String publisherName;
     private String userName = new AdminPanel().getUser().getUsername();
 
     public noticeMUI() {
-        setTitle("add notice");
-        setSize(600,500);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("Add Notice",600,500);
+
+//        setTitle("add notice");
+//        setSize(600,500);
+//        setResizable(false);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(noticeManagementPanel);
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
         textArea1.setLineWrap(true);
         textArea1.setWrapStyleWord(true);
         textArea1.setColumns(30);
         setVisible(true);
-
-        createTable();
+        String[] columns = {"Id","Title","Posted Date","Target"};
+        createTable(table1,columns);
         tableLoad();
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -70,7 +72,7 @@ public class noticeMUI extends JFrame {
                           String by = rs.getString(5);
                           String to = rs.getString(6);
                           try{
-                              query = "SELECT username FROM users JOIN notices ON notices.posted_by = users.user_id WHERE notices.posted_by = ?";
+                              query = "SELECT Name FROM user JOIN notices ON notices.posted_by = user.NIC WHERE notices.posted_by = ?";
                               con = Database.getConnection();
                               pstmt = con.prepareStatement(query);
                               pstmt.setString(1,by);
@@ -119,7 +121,7 @@ public class noticeMUI extends JFrame {
                         pstmt.setString(1,dtm.getValueAt(selectRow,0).toString());
                         int i = pstmt.executeUpdate();
                         if(i>0){
-                            JOptionPane.showMessageDialog(null,"Notoce deleted successfully");
+                            JOptionPane.showMessageDialog(null,"Notice deleted successfully");
                         }else{
                             JOptionPane.showMessageDialog(null,"Error in deletion");
                             return;
@@ -144,18 +146,18 @@ public class noticeMUI extends JFrame {
         });
     }
 
-    public void createTable(){
-        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"Id","Title","Posted Date","Target"}));
-        table1.setRowHeight(25); // Make rows taller
-        table1.setShowGrid(true);
-        table1.setGridColor(Color.LIGHT_GRAY);
-        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
-        JTableHeader header = table1.getTableHeader();
-        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
-        header.setForeground(Color.WHITE);
-
-    }
+//    public void createTable(){
+//        table1.setModel(new javax.swing.table.DefaultTableModel(null,new String[]{"Id","Title","Posted Date","Target"}));
+//        table1.setRowHeight(25); // Make rows taller
+//        table1.setShowGrid(true);
+//        table1.setGridColor(Color.LIGHT_GRAY);
+//        table1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//        table1.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+//        JTableHeader header = table1.getTableHeader();
+//        header.setBackground(new Color(30, 144, 255)); // DodgerBlue
+//        header.setForeground(Color.WHITE);
+//
+//    }
 
     public void tableLoad(){
         int count;
@@ -181,6 +183,8 @@ public class noticeMUI extends JFrame {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
     }
+
+
 
 
 }

@@ -13,13 +13,26 @@ public class Login extends JFrame {
     private JPanel mainPanel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private String studentId;
+
+    public static String getStudentID() {
+        return StudentID;
+    }
+
+//    public static void setStudentID(String studentID) {
+//        StudentID = studentID;
+//    }
+
     private JButton loginButton;
+
+    private static String StudentID;
 
     public Login() {
         setTitle("User Login");
-        setSize(400, 200);
+//        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
+        pack();
         setLocationRelativeTo(null);
 
         loginButton.addActionListener(new ActionListener() {
@@ -34,6 +47,7 @@ public class Login extends JFrame {
 
     private void authenticateUser() {
         String username = usernameField.getText();
+        StudentID = username;
         String password = new String(passwordField.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
@@ -41,7 +55,11 @@ public class Login extends JFrame {
             return;
         }
 
-        String query = "SELECT Password, Role FROM User WHERE Email = ?";
+        String query = "SELECT u.Password, u.Role, s.Student_ID " +
+                "FROM User u " +
+                "LEFT JOIN Student s ON u.NIC = s.NIC " +
+                "WHERE u.Email = ?";
+
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -51,6 +69,8 @@ public class Login extends JFrame {
 
             if (rs.next()) {
                 String storedHash = rs.getString("password");
+
+                studentId = rs.getString("Student_ID");
                 if (BCrypt.checkpw(password, storedHash)) {
                     Role role = Role.fromString(rs.getString("role"));
                     JOptionPane.showMessageDialog(this, "Login Successful!");
@@ -72,7 +92,9 @@ public class Login extends JFrame {
     private void openDashboard(User user) {
         switch (user.getRole()) {
             case ADMIN -> new AdminPanel(user);
-            case STUDENT -> new StudentPanel(user);
+            case STUDENT -> new UndergraduateDashboard(studentId);
+            case TECHNICAL_OFFICER -> new profileView(user);
+            case LECTURER -> new lec_Dash();
             default -> JOptionPane.showMessageDialog(this, "Role not implemented.");
         }
     }

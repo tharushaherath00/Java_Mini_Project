@@ -18,7 +18,7 @@ public class AdminPanel extends JFrame {
 
     public AdminPanel(){
         setTitle("Admin Dashboard");
-        setSize(400, 500);
+        setSize(600, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -74,7 +74,22 @@ public class AdminPanel extends JFrame {
                 dispose();
             }
         });
+        userManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new UserMNG(user);
+            }
+        });
+        timetableManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new TimetableMNG(user);
+            }
+        });
     }
+
 
 
 }

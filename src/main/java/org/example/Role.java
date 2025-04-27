@@ -1,9 +1,28 @@
 package org.example;
 
 public enum Role {
-    ADMIN, STUDENT, TEACHER;
+    ADMIN("admin"),
+    LECTURER("Lecturer"),
+    DEAN("Dean"),
+    STUDENT("Student"),
+    TECHNICAL_OFFICER("Technical Officer");
 
-    public static Role fromString(String role) {
-        return Role.valueOf(role.toUpperCase());
+    private final String value;
+
+    Role(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static Role fromString(String value) {
+        for (Role role : Role.values()) {
+            if (role.getValue().equalsIgnoreCase(value)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("Invalid role: " + value);
     }
 }

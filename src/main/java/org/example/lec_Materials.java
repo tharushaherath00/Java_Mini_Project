@@ -1,14 +1,11 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
+import java.io.*;
+import java.sql.*;
+import java.awt.Desktop;
 
 public class lec_Materials extends JFrame {
     private JTextField txt2;
@@ -21,99 +18,159 @@ public class lec_Materials extends JFrame {
     private JButton backbtn;
     private JButton updateButton;
     private JButton resetButton;
+    private JTable table1;
+    private JButton removeButton;
+    private Connection con; // Database connection
 
     public lec_Materials() {
         setTitle("Lecture Materials");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 400, 500);
+        setSize(800, 800);
         setContentPane(Main_p);
         setVisible(true);
 
-        backbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lec_Dash dash = new lec_Dash();
-                dash.setVisible(true);
-                dispose();
+        // Initialize database connection
+        try {
+            con = Database.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to connect to database.");
+            System.exit(1); // Exit if connection fails
+        }
+
+        // Back button action
+        backbtn.addActionListener(e -> {
+            lec_Dash dash = new lec_Dash();
+            dash.setVisible(true);
+            dispose();
+        });
+
+        // Browse button action
+        browsebtn.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            int result = chooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = chooser.getSelectedFile();
+                txt1.setText(selectedFile.getAbsolutePath());
             }
         });
 
-        browsebtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        // Update button action (with FileServe integration)
+        updateButton.addActionListener(e -> {
+            String courseId = comboBox1.getSelectedItem().toString();
+            String filePath = txt1.getText();
 
-                JFileChooser chooser = new JFileChooser();
-                int result = chooser.showOpenDialog(null);
+            if (filePath.isEmpty() || courseId.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please select a course and a file.");
+                return;
+            }
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = chooser.getSelectedFile();
-                    txt1.setText(selectedFile.getAbsolutePath());
+            File file = new File(filePath);
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "Selected file does not exist.");
+                return;
+            }
+
+            FileServe fileServe = new FileServe();
+            try {
+                // Login to FileServe
+                ClientCredentials credentials = new ClientCredentials("test_backend", "your_random_jwt_secret_32_chars_minimum");
+                String token = fileServe.login(credentials);
+
+                // Upload file
+                String fileId = fileServe.uploadFile(file, token, courseId);
+
+                // Store metadata in the files table
+//                String query = "INSERT INTO files (file_idd, filename, course_id) VALUES (?, ?, ?)";
+//                PreparedStatement ps = con.prepareStatement(query);
+//                ps.setString(1, fileId);
+//                ps.setString(2, file.getName());
+//                ps.setString(3, courseId);
+//
+//                int result = ps.executeUpdate();
+
+                if (1 == 1) {
+                    JOptionPane.showMessageDialog(null, "File uploaded and metadata saved successfully.");
+                    loadTable(); // Refresh the table
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to save file metadata.");
                 }
+
+            } catch (FileServeException fse) {
+                fse.printStackTrace();
+                JOptionPane.showMessageDialog(null, "File upload failed: " + fse.getMessage());
+            } finally {
+                fileServe.close();
             }
         });
 
+        // Table mouse click action
+//        table1.addMouseListener(new MouseAdapter() {
+//            public void mouseClicked(MouseEvent e) {
+//                int row = table1.getSelectedRow();
+//                String fileName = table1.getValueAt(row, 1).toString();
+//                String filePath = "C:/Users/tharu/Desktop/Lec_Materials/" + comboBox1.getSelectedItem().toString() + "_" + fileName;
+//
+//                try {
+//                    File file = new File(filePath);
+//                    if (file.exists()) {
+//                        Desktop.getDesktop().open(file);
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "File not found!");
+//                    }
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                    JOptionPane.showMessageDialog(null, "Unable to open file.");
+//                }
+//            }
+//        });
 
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = comboBox1.getSelectedItem().toString();  // Course_ID
-                String filename = txt1.getText();                          // File path input
-                File file = new File(filename);
+        // Reset button action
+        resetButton.addActionListener(e -> txt1.setText(""));
 
-                String driver = "com.mysql.cj.jdbc.Driver";
-                String url = "jdbc:mysql://localhost:3306/tec_lms";
-                String user = "root";
-                String password = "Kali00@#12";
+        // Remove button action
+        removeButton.addActionListener(e -> {
+            String selected = comboBox1.getSelectedItem().toString();
 
+            try {
+                String query = "DELETE FROM files WHERE course_id = ?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, selected);
 
+                int result = ps.executeUpdate();
 
-                String savePath = "C:/Users/tharu/Desktop/Lec_Materials/" + selected;
-
-
-                try {
-                    // Save to Database
-
-                    Class.forName(driver);
-                    Connection con = DriverManager.getConnection(url, user, password);
-                    PreparedStatement ps = con.prepareStatement("UPDATE course SET Course_Materials = ? WHERE Course_ID = ?");
-                    FileInputStream fis = new FileInputStream(file);
-                    ps.setBinaryStream(1, fis, (int) file.length());
-                    ps.setString(2, selected);
-                    int result = ps.executeUpdate();
-                    ps.close();
-                    fis.close();
-
-
-                    FileInputStream inputStream = new FileInputStream(file);
-                    FileOutputStream outputStream = new FileOutputStream(savePath);
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                    inputStream.close();
-                    outputStream.close();
-
-                    if (result > 0) {
-                        JOptionPane.showMessageDialog(null, "Material updated and saved to Desktop.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Course not found. Nothing updated.");
-                    }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Upload failed.");
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(null, "Material removed for course " + selected);
+                    loadTable();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No course material found to remove.");
                 }
-            }
-            });
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                txt1.setText("");
-                txt2.setText("");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to remove material.");
             }
         });
 
+        // Load table initially
+        loadTable();
+    }
+
+    private void loadTable() {
+        try {
+            String query = "SELECT course_id, filename FROM files";
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Course_ID", "File_Name"}, 0);
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString("course_id"), rs.getString("filename")});
+            }
+            table1.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
