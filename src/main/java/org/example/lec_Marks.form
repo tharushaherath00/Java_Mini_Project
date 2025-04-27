@@ -45,7 +45,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial Black" size="16" style="2"/>
-                  <text value="  Manage Course Materials"/>
+                  <text value="  Manage Course Marks"/>
                 </properties>
               </component>
               <hspacer id="61e2c">
@@ -92,14 +92,14 @@
               <model>
                 <item value="Assignment_01"/>
                 <item value="Assignment_02"/>
-                <item value="Quiz_01 "/>
-                <item value="Quiz_02 "/>
-                <item value="Quiz_03 "/>
+                <item value="Quiz_01"/>
+                <item value="Quiz_02"/>
+                <item value="Quiz_03"/>
                 <item value="Quiz_04"/>
                 <item value="Mid_theory"/>
                 <item value="Mid_practical"/>
                 <item value="End_theory"/>
-                <item value="End_practical "/>
+                <item value="End_practical"/>
               </model>
             </properties>
           </component>
