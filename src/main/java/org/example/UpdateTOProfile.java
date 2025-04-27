@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class UpdateTOProfile {
+public class UpdateTOProfile extends JFrame{
     private JPanel main;
     private JPanel buttonback;
     private JTextField name;
@@ -28,6 +28,12 @@ public class UpdateTOProfile {
     private Connection conn;
 
     public UpdateTOProfile(User user) {
+        setTitle("update TO profile");
+        setSize(600,500);
+        setContentPane(main);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
         this.user = user;
 
         try {
@@ -49,13 +55,15 @@ public class UpdateTOProfile {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame("Technical Officer Profile");
+                // Ensure you pass the user object to profileView
                 profileView profile = new profileView(user);
                 frame.setContentPane(profile.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
 
-                SwingUtilities.getWindowAncestor(main).dispose(); // Close current window
+                // Close current window
+                SwingUtilities.getWindowAncestor(main).dispose();
             }
         });
     }
