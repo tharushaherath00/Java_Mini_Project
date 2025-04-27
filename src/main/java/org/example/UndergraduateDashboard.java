@@ -73,7 +73,7 @@ public class UndergraduateDashboard extends JFrame {
             }
         });
     }
-    public static void main(String[] args) {
-        new UndergraduateDashboard("S002");
-    }
+//    public static void main(String[] args) {
+//        new UndergraduateDashboard("S002");
+//    }
 }
