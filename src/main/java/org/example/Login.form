@@ -97,7 +97,7 @@
         <properties>
           <font name="Segoe UI" size="8" style="2"/>
           <foreground color="-4737097"/>
-          <text value="This LMS is 100% bug-free (probably)."/>
+          <text value="Crafted with 0% bugs (terms apply)."/>
         </properties>
       </component>
     </children>
