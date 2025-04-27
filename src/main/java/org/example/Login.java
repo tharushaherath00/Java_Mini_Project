@@ -87,6 +87,7 @@ public class Login extends JFrame {
             case ADMIN -> new AdminPanel(user);
             case STUDENT -> new StudentPanel(user);
             case TECHNICAL_OFFICER -> new profileView(user);
+            case LECTURER -> new lec_Dash();
             default -> JOptionPane.showMessageDialog(this, "Role not implemented.");
         }
     }
