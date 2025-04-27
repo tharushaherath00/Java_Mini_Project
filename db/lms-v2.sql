@@ -75,22 +75,6 @@ CREATE TABLE Course (
         FOREIGN KEY (posted_by) REFERENCES User(NIC)
     );
 
---CREATE TABLE Notices (
---    notice_id INT AUTO_INCREMENT PRIMARY KEY,
---    title VARCHAR(255) NOT NULL,
---    content TEXT NOT NULL,
---    posted_date DATETIME NOT NULL,
---    target_role ENUM('all', 'student', 'lecturer', 'to', 'admin', 'dean') NOT NULL DEFAULT 'all'
---);
-
---CREATE TABLE Notice_Admin (
---    notice_id INT,
---    admin_id VARCHAR(20),
---    PRIMARY KEY (notice_id, admin_id),
---    FOREIGN KEY (notice_id) REFERENCES Notices(notice_id),
---    FOREIGN KEY (admin_id) REFERENCES Admin(Admin_ID)
---);
-
 CREATE TABLE Timetable (
     Timetable_ID INT PRIMARY KEY,
     Course_ID VARCHAR(10),
@@ -157,7 +141,6 @@ CREATE TABLE Medical (
 );
 
 CREATE TABLE files (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     file_id VARCHAR(50) NOT NULL UNIQUE,
     filename VARCHAR(255) NOT NULL,
     course_id VARCHAR(50) NOT NULL,
@@ -273,19 +256,6 @@ INSERT INTO Admin (NIC, Admin_ID) VALUES
 INSERT INTO Notices (title, content, posted_date, posted_by, target_role) VALUES
 ('Welcome to Semester 2', 'Welcome all students to Level 01 Semester 02.', NOW(),'100133445V','student'),
 ('Staff Meeting', 'There will be a staff meeting on Friday.', NOW(),'921112348V','lecturer');
-
---INSERT INTO Notices (title, content, posted_date, target_role)
---VALUES
---('Welcome to Semester 2', 'Welcome all students to Level 01 Semester 02.', NOW(), 'student'),
---('Staff Meeting', 'There will be a staff meeting on Friday.', NOW(), 'lecturer'),
---('Deans Address', 'The Dean will address the faculty on Monday.', NOW(), 'dean'),
---('System Maintenance', 'System will be down for maintenance this weekend.', NOW(), 'all');
-
-INSERT INTO Notice_Admin (notice_id, Admin_ID) VALUES
-(1, 'ADMIN001'),
-(2, 'ADMIN001'),
-(3, 'ADMIN001'),
-(4, 'ADMIN001');
 
 INSERT INTO Atendance
 (Attendance_ID, Student_ID, Course_ID, Session_Type, Status, Date) VALUES
