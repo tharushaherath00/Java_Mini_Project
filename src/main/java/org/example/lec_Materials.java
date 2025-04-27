@@ -159,6 +159,7 @@ public class lec_Materials extends JFrame {
     private void loadTable() {
         try {
             String query = "SELECT course_id, filename FROM files";
+          
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 

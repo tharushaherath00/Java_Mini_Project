@@ -74,6 +74,7 @@ public class Login extends JFrame {
         switch (user.getRole()) {
             case ADMIN -> new AdminPanel(user);
             case STUDENT -> new StudentPanel(user);
+            case TECHNICAL_OFFICER -> new profileView(user);
             default -> JOptionPane.showMessageDialog(this, "Role not implemented.");
         }
     }
