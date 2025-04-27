@@ -5,14 +5,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class UndergraduateViewNotice extends JFrame {
 
     private JTable table;
     private DefaultTableModel tableModel;
+    private String userId;
 
-    public UndergraduateViewNotice() {
+    public UndergraduateViewNotice(String userId) {
+        this.userId = userId;
         setTitle("Latest Notices");
         setSize(850, 500);
         setLocationRelativeTo(null);
@@ -30,11 +34,28 @@ public class UndergraduateViewNotice extends JFrame {
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(mainPanel);
 
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(new Color(250, 255, 250));
+
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        backButton.setBackground(new Color(200, 80, 80));
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        topPanel.add(backButton, BorderLayout.WEST);
+
+
         JLabel titleLabel = new JLabel("Latest Notices");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
         titleLabel.setForeground(new Color(55, 80, 55));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        topPanel.add(titleLabel, BorderLayout.CENTER);
+
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+
 
         tableModel = new DefaultTableModel(new String[]{"Title", "Content", "Posted Date", "Target Role"}, 0);
         table = new JTable(tableModel);
@@ -53,6 +74,15 @@ public class UndergraduateViewNotice extends JFrame {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(55, 80, 55)));
 
         mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new UndergraduateDashboard(userId);
+            }
+        });
     }
 
     private void loadNoticeData() {
@@ -81,6 +111,4 @@ public class UndergraduateViewNotice extends JFrame {
                     "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-
 }

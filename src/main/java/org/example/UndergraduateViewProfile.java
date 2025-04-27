@@ -17,7 +17,7 @@ public class UndergraduateViewProfile extends JFrame {
     private String name, email, dob, role, profilePicPath;
 
     public UndergraduateViewProfile(String userId) {
-        this.userId = userId; // Initialize userId
+        this.userId = userId;
         fetchProfileData();
 
         setTitle("My Profile");
@@ -46,11 +46,11 @@ public class UndergraduateViewProfile extends JFrame {
         profilePanel.setBackground(Color.WHITE);
         profilePanel.setBorder(BorderFactory.createLineBorder(new Color(180, 220, 180)));
 
-        // Profile Picture
+
         profilePicLabel = new JLabel();
         profilePicLabel.setBounds(540, 40, 160, 160);
         profilePicLabel.setBorder(BorderFactory.createLineBorder(new Color(120, 160, 120)));
-        loadImage(profilePicPath); // Load the image after fetching the profile data
+        loadImage(profilePicPath);
         profilePanel.add(profilePicLabel);
 
         editPicButton = new JButton("Edit Picture");
@@ -110,18 +110,31 @@ public class UndergraduateViewProfile extends JFrame {
         roleValue.setFont(valueFont);
         profilePanel.add(roleValue);
 
+
+        JButton backButton = new JButton("Back to Dashboard");
+        backButton.setBounds(50, 280, 200, 30);
+        backButton.setFocusPainted(false);
+        backButton.setBackground(new Color(180, 100, 100));
+        backButton.setForeground(Color.WHITE);
+
+        backButton.addActionListener(e -> {
+            new UndergraduateDashboard(userId);
+            dispose();
+        });
+
+        profilePanel.add(backButton);
+
         contentPane.add(profilePanel, BorderLayout.CENTER);
     }
 
     private void loadImage(String path) {
         if (path == null || path.isEmpty()) {
-            path = "C:\\Users\\ROG\\OneDrive\\Pictures\\Saved Pictures\\default.jpeg"; // Default image path if no profile picture
+            path = "C:\\Users\\ROG\\OneDrive\\Pictures\\Saved Pictures\\default.jpeg";
         }
-
 
         File file = new File(path);
         if (!file.exists()) {
-            path = "C:\\Users\\ROG\\OneDrive\\Pictures\\Saved Pictures\\default.jpeg"; // Fallback to default if file doesn't exist
+            path = "C:\\Users\\ROG\\OneDrive\\Pictures\\Saved Pictures\\default.jpeg";
         }
 
         ImageIcon imgIcon = new ImageIcon(path);
@@ -144,7 +157,6 @@ public class UndergraduateViewProfile extends JFrame {
                 role = rs.getString("Role");
                 profilePicPath = rs.getString("profilePic");
 
-
                 System.out.println("Profile Picture Path: " + profilePicPath);
             }
         } catch (SQLException e) {
@@ -162,7 +174,7 @@ public class UndergraduateViewProfile extends JFrame {
             File selectedFile = chooser.getSelectedFile();
             String newPath = selectedFile.getAbsolutePath();
 
-            // Update DB
+
             try (Connection con = Database.getConnection()) {
                 String update = "UPDATE User SET profilePic = ? WHERE NIC = (SELECT NIC FROM Student WHERE Student_ID = ?)";
                 PreparedStatement ps = con.prepareStatement(update);
@@ -170,7 +182,7 @@ public class UndergraduateViewProfile extends JFrame {
                 ps.setString(2, userId);
                 ps.executeUpdate();
 
-                loadImage(newPath); // Load the new image
+                loadImage(newPath);
                 JOptionPane.showMessageDialog(this, "Profile picture updated successfully!");
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Failed to update picture:\n" + e.getMessage(),

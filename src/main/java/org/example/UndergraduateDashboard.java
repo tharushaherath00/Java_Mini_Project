@@ -31,12 +31,14 @@ public class UndergraduateDashboard extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 new UndergraduateViewProfile(userId);
+                dispose();
             }
         });
         coursebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UndergraduateViewCourseDetails();
+                new UndergraduateViewCourseDetails(userId);
+                dispose();
 
             }
         });
@@ -44,30 +46,34 @@ public class UndergraduateDashboard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new UndergraduateViewAttendance(userId);
+                dispose();
             }
         });
         gradebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             new UndergraduateViewGrade(userId);
+            dispose();
             }
         });
         timetablebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UndergraduateViewTimeTable();
+                new UndergraduateViewTimeTable(userId);
+                dispose();
 
             }
         });
         noticebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UndergraduateViewNotice();
+                new UndergraduateViewNotice(userId);
+                dispose();
 
             }
         });
     }
     public static void main(String[] args) {
-        new UndergraduateDashboard("S004");
+        new UndergraduateDashboard("S002");
     }
 }

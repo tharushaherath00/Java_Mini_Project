@@ -36,10 +36,15 @@ public class UndergraduateViewAttendance extends JFrame {
         mainPanel.setBackground(new Color(250, 255, 250));
         setContentPane(mainPanel);
 
-
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         topPanel.setBackground(new Color(250, 255, 250));
         mainPanel.add(topPanel, BorderLayout.NORTH);
+
+
+        JLabel titleLabel = new JLabel("Attendance");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setForeground(new Color(55, 80, 55));
+        topPanel.add(titleLabel);
 
         medicalRadio = new JRadioButton("Include Medical");
         medicalRadio.setBackground(new Color(250, 255, 250));
@@ -54,6 +59,12 @@ public class UndergraduateViewAttendance extends JFrame {
         loadButton.setFocusPainted(false);
         topPanel.add(loadButton);
 
+        JButton backButton = new JButton("Back to Dashboard");
+        backButton.setBackground(new Color(180, 100, 100));
+        backButton.setForeground(Color.WHITE);
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        backButton.setFocusPainted(false);
+        topPanel.add(backButton);
 
         tableModel = new DefaultTableModel(new String[]{"Student ID", "Course ID", "Session Type", "Percentage"}, 0);
         table = new JTable(tableModel);
@@ -81,6 +92,15 @@ public class UndergraduateViewAttendance extends JFrame {
                 loadAttendanceData(userId);
             }
         });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UndergraduateDashboard dashboard = new UndergraduateDashboard(userId);
+                dashboard.setVisible(true);
+                dispose();
+            }
+        });
     }
 
     private void loadAttendanceData(String userId) {
@@ -95,11 +115,9 @@ public class UndergraduateViewAttendance extends JFrame {
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-
             stmt.setString(1, userId);
 
             try (ResultSet rs = stmt.executeQuery()) {
-
                 Map<String, int[]> courseAttendance = new HashMap<>();
 
                 while (rs.next()) {
@@ -112,7 +130,6 @@ public class UndergraduateViewAttendance extends JFrame {
                     int[] counts = courseAttendance.getOrDefault(key, new int[3]);
 
                     counts[0]++;
-
                     if ("Present".equalsIgnoreCase(status)) {
                         counts[1]++;
                     } else if ("Medical".equalsIgnoreCase(status)) {
@@ -121,7 +138,6 @@ public class UndergraduateViewAttendance extends JFrame {
 
                     courseAttendance.put(key, counts);
                 }
-
 
                 for (Map.Entry<String, int[]> entry : courseAttendance.entrySet()) {
                     String[] parts = entry.getKey().split("-");
