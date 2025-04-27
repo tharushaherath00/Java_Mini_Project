@@ -151,7 +151,7 @@ CREATE TABLE files (
 INSERT INTO Department (Dep_ID, Dep_Name) VALUES
 ('ICT', 'Information and Communication Technology'),
 ('ET', 'Engineering Technology'),
-('BT', 'Bio System Technology'),
+('BST', 'Bio System Technology'),
 ('MDS', 'Multideceplinary');
 
 INSERT INTO User (NIC, Name, Password, Email, DOB, Department_ID, Department, Role) VALUES
@@ -2502,6 +2502,35 @@ VALUES
 ('S019', 'ICT2152', '2025-03-01', 'Submitted medical certificate', 's019_20250301.jpg', 'image/jpeg', 'Approved', 'TO01'),
 ('S019', 'ICT2152', '2025-04-05', 'Submitted medical certificate', 's019_20250405.jpg', 'image/jpeg', 'Approved', 'TO01');
 
+DROP TABLE Notice_Admin;
+DROP TABLE notices;
+
+CREATE TABLE Notices (
+    notice_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    posted_date DATETIME NOT NULL,
+    posted_by VARCHAR(12),
+    target_role ENUM('all', 'student', 'lecturer', 'to', 'admin', 'dean') NOT NULL DEFAULT 'all',
+    FOREIGN KEY (posted_by) REFERENCES User(NIC)
+);
+
+
+CREATE TABLE Notice_Admin (
+    notice_id INT,
+    admin_id VARCHAR(20),
+    PRIMARY KEY (notice_id, admin_id),
+    FOREIGN KEY (notice_id) REFERENCES Notices(notice_id),
+    FOREIGN KEY (admin_id) REFERENCES Admin(Admin_ID)
+);
+
+INSERT INTO Notices (title, content, posted_date,posted_by,target_role)
+VALUES
+('Welcome to Semester 2', 'Welcome all students to Level 01 Semester 02.', NOW(),'100133445V','student'),
+('Staff Meeting', 'There will be a staff meeting on Friday.', NOW(),'101233445V','lecturer'),
+('Deans Address', 'The Dean will address the faculty on Monday.', NOW(),'100133445V','dean'),
+('System Maintenance', 'System will be down for maintenance this weekend.', NOW(),'100133445V','all');
+
 INSERT INTO Timetable (Timetable_ID, Course_ID, Day, Start_Time, End_Time, Room, Lecturer_ID) VALUES
 (1, 'ICT2113', 'Monday', '08:00:00', '10:00:00', 'LR101', 'L001'),
 (2, 'ICT2122', 'Monday', '10:30:00', '12:30:00', 'LR102', 'L002'),
@@ -2513,3 +2542,4 @@ INSERT INTO Timetable (Timetable_ID, Course_ID, Day, Start_Time, End_Time, Room,
 (8, 'ICT2122', 'Thursday', '09:00:00', '11:00:00', 'LR106', 'L002'),
 (9, 'ICT2133', 'Friday', '13:00:00', '15:00:00', 'LAB03', 'L003'),
 (10, 'ICT2142', 'Tuesday', '10:00:00', '12:00:00', 'LR107', 'L004');
+
