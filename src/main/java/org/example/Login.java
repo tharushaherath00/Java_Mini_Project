@@ -12,7 +12,18 @@ public class Login extends JFrame {
     private JPanel mainPanel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+
+    public static String getStudentID() {
+        return StudentID;
+    }
+
+//    public static void setStudentID(String studentID) {
+//        StudentID = studentID;
+//    }
+
     private JButton loginButton;
+
+    private static String StudentID;
 
     public Login() {
         setTitle("User Login");
@@ -33,6 +44,7 @@ public class Login extends JFrame {
 
     private void authenticateUser() {
         String username = usernameField.getText();
+        StudentID = username;
         String password = new String(passwordField.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
