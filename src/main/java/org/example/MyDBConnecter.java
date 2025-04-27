@@ -7,7 +7,7 @@ public class MyDBConnecter {
     String driver="com.mysql.cj.jdbc.Driver";
     String url="jdbc:mysql://localhost:3306/tec_lms";
     String user="root";
-    String password = "Kali00@#12";
+    String password = "root;
 
     private Connection myCon = null;
     private void driverRegistering(){

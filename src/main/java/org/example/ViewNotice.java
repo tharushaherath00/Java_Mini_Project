@@ -18,27 +18,24 @@ public class ViewNotice extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(MainP);
         setVisible(true);
-
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new String[]{"notice_id", "title", "content", "posted_date", "target_role"});
+        table1.setModel(model);
 
 
         String driver = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/tec_lms";
         String user = "root";
-        String password = "1234";
-
+        String password = "root";
         try {
             Class.forName(driver);
-            Connection con= DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url, user, password);
 
             String query = "SELECT * FROM notices";
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
-            DefaultTableModel model = (DefaultTableModel) table1.getModel();
-            model.setRowCount(0);
-            model.setColumnIdentifiers(new String[]{"notice_id", "title", "content", "posted_date", "target_role"});
-
-
+            model.setRowCount(0); // Clear previous data
 
             table1.setRowHeight(25);
 
@@ -50,11 +47,10 @@ public class ViewNotice extends JFrame {
                 String target_role = rs.getString("target_role");
                 model.addRow(new String[]{notice_id, title, content, posted_date, target_role});
             }
+
             con.close();
             rs.close();
             ps.close();
-
-
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
