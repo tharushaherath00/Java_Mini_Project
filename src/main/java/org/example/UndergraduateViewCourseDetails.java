@@ -5,8 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +16,14 @@ public class UndergraduateViewCourseDetails extends JFrame {
     private JComboBox<String> materialComboBox;
     private JLabel downloadLinkLabel;
     private String userId;
-
     private Map<String, String> courseNameToIdMap = new HashMap<>();
+    private Map<String, String> materialNameToFileIdMap = new HashMap<>();
+    private FileServe fileServe; // FileServe instance from template
 
     public UndergraduateViewCourseDetails(String userId) {
         this.userId = userId;
+        // Initialize FileServe
+        this.fileServe = new FileServe();
         setTitle("Enrolled Course Details");
         setSize(750, 550);
         setLocationRelativeTo(null);
@@ -31,6 +32,19 @@ public class UndergraduateViewCourseDetails extends JFrame {
         initUI();
         loadCourseData();
         setVisible(true);
+    }
+
+    @Override
+    public void dispose() {
+        // Clean up FileServe resources
+        if (fileServe != null) {
+            try {
+                fileServe.close();
+            } catch (Exception e) {
+                System.err.println("Error closing FileServe: " + e.getMessage());
+            }
+        }
+        super.dispose();
     }
 
     private void initUI() {
@@ -110,7 +124,7 @@ public class UndergraduateViewCourseDetails extends JFrame {
         downloadButton.setFocusPainted(false);
         downloadButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
-        downloadLinkLabel = new JLabel("Download link will appear here.");
+        downloadLinkLabel = new JLabel("Download status will appear here.");
         downloadLinkLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         downloadLinkLabel.setForeground(new Color(55, 80, 55));
 
@@ -124,7 +138,6 @@ public class UndergraduateViewCourseDetails extends JFrame {
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-
         backButton.addActionListener(e -> {
             new UndergraduateDashboard(userId);
             dispose();
@@ -137,9 +150,9 @@ public class UndergraduateViewCourseDetails extends JFrame {
             String selectedMaterial = (String) materialComboBox.getSelectedItem();
 
             if (selectedCourseName != null && selectedMaterial != null) {
-                String downloadLink = downloadCourseMaterials(selectedCourseName, selectedMaterial);
-                downloadLinkLabel.setText("<html><a href='" + downloadLink + "'>" + downloadLink + "</a></html>");
+                downloadCourseMaterials(selectedCourseName, selectedMaterial);
             } else {
+                downloadLinkLabel.setText("Error: Please select both a course and a material.");
                 JOptionPane.showMessageDialog(UndergraduateViewCourseDetails.this,
                         "Please select both a course and a material type.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -169,11 +182,12 @@ public class UndergraduateViewCourseDetails extends JFrame {
     private void loadMaterialsForSelectedCourse() {
         String selectedCourseName = (String) courseComboBox.getSelectedItem();
         materialComboBox.removeAllItems();
+        materialNameToFileIdMap.clear();
 
         if (selectedCourseName != null) {
             String selectedCourseId = courseNameToIdMap.get(selectedCourseName);
 
-            String sql = "SELECT filename FROM files WHERE course_id = ?";
+            String sql = "SELECT filename, file_id FROM files WHERE course_id = ?";
 
             try (Connection conn = Database.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -183,7 +197,9 @@ public class UndergraduateViewCourseDetails extends JFrame {
 
                 while (rs.next()) {
                     String filename = rs.getString("filename");
+                    String fileId = rs.getString("file_id");
                     materialComboBox.addItem(filename);
+                    materialNameToFileIdMap.put(filename, fileId);
                 }
 
             } catch (SQLException e) {
@@ -192,9 +208,47 @@ public class UndergraduateViewCourseDetails extends JFrame {
         }
     }
 
-    private String downloadCourseMaterials(String courseName, String materialType) {
-        String coursePart = courseName.replace(" ", "_");
-        String materialPart = materialType.replace(" ", "_");
-        return "http://example.com/download/" + coursePart + "/" + materialPart;
+    private void downloadCourseMaterials(String courseName, String materialName) {
+        try {
+            // Retrieve fileId for the selected material
+            String fileId = materialNameToFileIdMap.get(materialName);
+            if (fileId == null) {
+                downloadLinkLabel.setText("Error: File ID not found.");
+                JOptionPane.showMessageDialog(this, "File ID not found for the selected material.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Use credentials from template
+            ClientCredentials credentials = new ClientCredentials("test_backend", "your_random_jwt_secret_32_chars_minimum");
+
+            // Login to FileServe
+            String token = fileServe.login(credentials);
+            if (token == null || token.isEmpty()) {
+                downloadLinkLabel.setText("Error: Authentication failed.");
+                JOptionPane.showMessageDialog(this, "Failed to authenticate with file service.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Request file link and download file
+            String downloadUrl = fileServe.requestFileLink(fileId, token);
+            if (downloadUrl == null || downloadUrl.isEmpty()) {
+                downloadLinkLabel.setText("Error: Failed to retrieve download link.");
+                JOptionPane.showMessageDialog(this, "Failed to retrieve download link.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String outputDir = "."; // Root of the project
+            fileServe.downloadFile(downloadUrl, fileId, outputDir);
+
+            // Update label to indicate success
+            downloadLinkLabel.setText("File downloaded successfully to " + outputDir);
+
+        } catch (FileServeException e) {
+            downloadLinkLabel.setText("Error: FileServe error.");
+            JOptionPane.showMessageDialog(this, "FileServe error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            downloadLinkLabel.setText("Error: Unexpected error.");
+            JOptionPane.showMessageDialog(this, "Unexpected error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

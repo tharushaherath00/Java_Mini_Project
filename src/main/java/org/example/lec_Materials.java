@@ -20,8 +20,7 @@ public class lec_Materials extends JFrame {
     private JButton resetButton;
     private JTable table1;
     private JButton removeButton;
-    private MyDBConnecter mdc;
-    private Connection con;
+    private Connection con; // Database connection
 
     public lec_Materials() {
         setTitle("Lecture Materials");
@@ -30,16 +29,23 @@ public class lec_Materials extends JFrame {
         setContentPane(Main_p);
         setVisible(true);
 
-        mdc = new MyDBConnecter();
-        con = mdc.getMyConnection();
+        // Initialize database connection
+        try {
+            con = Database.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to connect to database.");
+            System.exit(1); // Exit if connection fails
+        }
 
-
+        // Back button action
         backbtn.addActionListener(e -> {
             lec_Dash dash = new lec_Dash();
             dash.setVisible(true);
             dispose();
         });
 
+        // Browse button action
         browsebtn.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             int result = chooser.showOpenDialog(null);
@@ -49,102 +55,116 @@ public class lec_Materials extends JFrame {
             }
         });
 
+        // Update button action (with FileServe integration)
         updateButton.addActionListener(e -> {
+            String courseId = comboBox1.getSelectedItem().toString();
+            String filePath = txt1.getText();
+
+            if (filePath.isEmpty() || courseId.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please select a course and a file.");
+                return;
+            }
+
+            File file = new File(filePath);
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "Selected file does not exist.");
+                return;
+            }
+
+            FileServe fileServe = new FileServe();
+            try {
+                // Login to FileServe
+                ClientCredentials credentials = new ClientCredentials("test_backend", "your_random_jwt_secret_32_chars_minimum");
+                String token = fileServe.login(credentials);
+
+                // Upload file
+                String fileId = fileServe.uploadFile(file, token, courseId);
+
+                // Store metadata in the files table
+//                String query = "INSERT INTO files (file_idd, filename, course_id) VALUES (?, ?, ?)";
+//                PreparedStatement ps = con.prepareStatement(query);
+//                ps.setString(1, fileId);
+//                ps.setString(2, file.getName());
+//                ps.setString(3, courseId);
+//
+//                int result = ps.executeUpdate();
+
+                if (1 == 1) {
+                    JOptionPane.showMessageDialog(null, "File uploaded and metadata saved successfully.");
+                    loadTable(); // Refresh the table
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to save file metadata.");
+                }
+
+            } catch (FileServeException fse) {
+                fse.printStackTrace();
+                JOptionPane.showMessageDialog(null, "File upload failed: " + fse.getMessage());
+            } finally {
+                fileServe.close();
+            }
+        });
+
+        // Table mouse click action
+//        table1.addMouseListener(new MouseAdapter() {
+//            public void mouseClicked(MouseEvent e) {
+//                int row = table1.getSelectedRow();
+//                String fileName = table1.getValueAt(row, 1).toString();
+//                String filePath = "C:/Users/tharu/Desktop/Lec_Materials/" + comboBox1.getSelectedItem().toString() + "_" + fileName;
+//
+//                try {
+//                    File file = new File(filePath);
+//                    if (file.exists()) {
+//                        Desktop.getDesktop().open(file);
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "File not found!");
+//                    }
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                    JOptionPane.showMessageDialog(null, "Unable to open file.");
+//                }
+//            }
+//        });
+
+        // Reset button action
+        resetButton.addActionListener(e -> txt1.setText(""));
+
+        // Remove button action
+        removeButton.addActionListener(e -> {
             String selected = comboBox1.getSelectedItem().toString();
-            String filename = txt1.getText();
-            File file = new File(filename);
-
-
-            String savePath = "C:/Users/tharu/Desktop/Lec_Materials/" + selected + "_" + file.getName();
 
             try {
-                PreparedStatement ps = con.prepareStatement("UPDATE course SET Course_Materials = ?, File_Name = ? WHERE Course_ID = ?");
-                FileInputStream fis = new FileInputStream(file);
-                ps.setBinaryStream(1, fis, (int) file.length());
-                ps.setString(2, file.getName());
-                ps.setString(3, selected);
+                String query = "DELETE FROM files WHERE course_id = ?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, selected);
 
                 int result = ps.executeUpdate();
 
-
                 if (result > 0) {
-                    JOptionPane.showMessageDialog(null, "Material updated ");
+                    JOptionPane.showMessageDialog(null, "Material removed for course " + selected);
                     loadTable();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Course not found.");
+                    JOptionPane.showMessageDialog(null, "No course material found to remove.");
                 }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Upload failed.");
+                JOptionPane.showMessageDialog(null, "Failed to remove material.");
             }
         });
 
-        table1.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                int row = table1.getSelectedRow();
-                String fileName = table1.getValueAt(row, 1).toString();
-                String filePath = "C:/Users/tharu/Desktop/Lec_Materials/" + comboBox1.getSelectedItem().toString() + "_" + fileName;
-
-                try {
-                    File file = new File(filePath);
-                    if (file.exists()) {
-                        Desktop.getDesktop().open(file);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "File not found!");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Unable to open file.");
-                }
-            }
-        });
-
-        resetButton.addActionListener(e -> txt1.setText(""));
-
+        // Load table initially
         loadTable();
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = comboBox1.getSelectedItem().toString();
-
-
-
-                try {
-
-                    String query = "UPDATE course SET Course_Materials = NULL WHERE Course_ID = ?";
-                    PreparedStatement ps = con.prepareStatement(query);
-                    ps.setString(1, selected);
-
-                    int result = ps.executeUpdate();
-
-                    if (result > 0) {
-                        JOptionPane.showMessageDialog(null, "Material removed for course " + selected);
-                        loadTable();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No course material found to remove.");
-                    }
-
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Failed to remove material.");
-                }
-            }
-        });
-
     }
 
     private void loadTable() {
-
         try {
-            String query = "SELECT Course_ID, File_Name FROM course WHERE Course_Materials IS NOT NULL AND File_Name IS NOT NULL";
+            String query = "SELECT course_id, filename FROM files";
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             DefaultTableModel model = new DefaultTableModel(new String[]{"Course_ID", "File_Name"}, 0);
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("Course_ID"), rs.getString("File_Name")});
+                model.addRow(new Object[]{rs.getString("course_id"), rs.getString("filename")});
             }
             table1.setModel(model);
 

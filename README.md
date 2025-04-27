@@ -29,7 +29,7 @@ Before running the project, make sure you have the following installed:
    Clone the repository to your local machine:
    ```bash
    git clone https://github.com/tharushaherath00/Java_Mini_Project.git
-   cd lms
+   cd Java_Mini_Project
    ```
 
 2. **Import Database:**
