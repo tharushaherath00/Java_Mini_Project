@@ -162,7 +162,7 @@ INSERT INTO User (NIC, Name, Password, Email, DOB, Department_ID, Department, Ro
 ('931122345V', 'S.Siwakumar', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech2@tech.ruh.ac.lk', '1987-05-22', 'ICT', 'Engineering Technology', 'Technical Officer'),
 ('931132345V', 'L.Indika', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech3@tech.ruh.ac.lk', '1984-01-30', 'ET', 'Engineering Technology', 'Technical Officer'),
 ('931142345V', 'Y.Chandika', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech4@tech.ruh.ac.lk', '1983-08-09', 'MDS', 'MultiDeciplinary', 'Technical Officer'),
-('931152345V', 'R.Rama', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech5@tech.ruh.ac.lk', '1983-08-09', 'BT', 'Bio System Technology', 'Technical Officer'),
+('931152345V', 'R.Rama', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech5@tech.ruh.ac.lk', '1983-08-09', 'BST', 'Bio System Technology', 'Technical Officer'),
 ('931162345V', 'R.Ranjith', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'tech6@tech.ruh.ac.lk', '1983-08-18', 'ICT', 'Information and Communication Technology', 'Technical Officer'),
 ('101113445V', 'P.Seetha', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'student1@tech.ruh.ac.lk', '2003-10-17', 'ICT', 'Information and Communication Technology', 'Student'),
 ('101123445V', 'A.Sanjeewa', '$2a$10$YdjTAWaBcioVqzUwwfRQJuUnmS3rJ9sfcLMiNlwiEST62kQ3FD576', 'student2@tech.ruh.ac.lk', '2004-03-22', 'ICT', 'Information and Communication Technology', 'Student'),
