@@ -229,7 +229,7 @@
         <properties>
           <background color="-4798534"/>
           <borderPainted value="false"/>
-          <contentAreaFilled value="true"/>
+          <contentAreaFilled value="false"/>
           <defaultCapable value="true"/>
           <doubleBuffered value="false"/>
           <enabled value="true"/>
@@ -237,7 +237,7 @@
           <icon value="button (1).png"/>
           <iconTextGap value="0"/>
           <inheritsPopupMenu value="false"/>
-          <opaque value="true"/>
+          <opaque value="false"/>
           <selected value="false"/>
           <text value=""/>
           <verifyInputWhenFocusTarget value="true"/>
@@ -251,6 +251,7 @@
         <properties>
           <background color="-4798534"/>
           <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
           <icon value="button (1).png"/>
           <text value=""/>
         </properties>
@@ -262,6 +263,7 @@
         <properties>
           <background color="-4798534"/>
           <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
           <icon value="button (1).png"/>
           <text value=""/>
         </properties>
@@ -273,6 +275,7 @@
         <properties>
           <background color="-4798534"/>
           <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
           <icon value="button (1).png"/>
           <text value=""/>
         </properties>
@@ -284,6 +287,7 @@
         <properties>
           <background color="-4798534"/>
           <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
           <icon value="button (1).png"/>
           <text value=""/>
         </properties>

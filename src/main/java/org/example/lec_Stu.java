@@ -10,6 +10,7 @@ public class lec_Stu extends JFrame {
     private JButton btn3;
     private JButton btn4;
     private JPanel Main_P;
+    private JButton backbtn;
 
     public lec_Stu() {
 
@@ -23,25 +24,41 @@ public class lec_Stu extends JFrame {
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                lec_ung_details l6 = new lec_ung_details ();
+                l6.setVisible(true);
+                dispose();
             }
         });
         btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+              lec_stu_eligi l7 = new lec_stu_eligi ();
+              l7.setVisible(true);
+              dispose();
             }
         });
         btn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                lec_ung_gpa l8 = new lec_ung_gpa ();
+                l8.setVisible(true);
+                dispose();
             }
         });
         btn4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+               lec_ung_attendance l9 = new lec_ung_attendance ();
+               l9.setVisible(true);
+               dispose();
+            }
+        });
+        backbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lec_Dash dash = new lec_Dash();
+                dash.setVisible(true);
+                dispose();
             }
         });
     }

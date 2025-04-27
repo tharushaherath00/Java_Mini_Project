@@ -1,7 +1,6 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,12 +12,13 @@ public class AdminPanel extends JFrame {
     private JLabel heading;
     private JPanel main;
     private JLabel welcomeLable;
+    private JButton backToLogin;
 
     private static User user;
 
     public AdminPanel(){
         setTitle("Admin Dashboard");
-        setSize(400, 500);
+        setSize(600, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -26,11 +26,12 @@ public class AdminPanel extends JFrame {
         setup();
 //        setVisible(true);
 //        revalidate();
+
     }
 
     public AdminPanel(User user) {
         setTitle("Admin Dashboard");
-        setSize(400, 500);
+        setSize(600, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -43,6 +44,10 @@ public class AdminPanel extends JFrame {
 //      revalidate();
 
 
+    }
+
+    public User getUser(){
+        return user;
     }
 
     public void setup(){
@@ -62,5 +67,29 @@ public class AdminPanel extends JFrame {
                 noticeMUI notice = new noticeMUI();
             }
         });
+        backToLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                dispose();
+            }
+        });
+        userManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new UserMNG(user);
+            }
+        });
+        timetableManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new TimetableMNG(user);
+            }
+        });
     }
+
+
+
 }
