@@ -55,7 +55,6 @@ public class UserMNG extends JFrame {
         JScrollPane tableScrollPane = new JScrollPane(userTable);
         mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
-        // Input panel
         JPanel inputPanel = new JPanel(new GridLayout(8, 2, 10, 5));
         inputPanel.setBorder(BorderFactory.createTitledBorder("User Details"));
 
@@ -95,7 +94,6 @@ public class UserMNG extends JFrame {
 
         mainPanel.add(inputPanel, BorderLayout.WEST);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         addButton = new JButton("Add User");
         addButton.addActionListener(e -> addUser());
@@ -155,7 +153,7 @@ public class UserMNG extends JFrame {
             departmentIdCombo.setSelectedItem(tableModel.getValueAt(selectedRow, 4));
             roleCombo.setSelectedItem(Role.fromString((String) tableModel.getValueAt(selectedRow, 5)));
             adminIdField.setText((String) tableModel.getValueAt(selectedRow, 6));
-            passwordField.setText(""); // Clear password field for security
+            passwordField.setText("");
         }
     }
 
@@ -235,7 +233,6 @@ public class UserMNG extends JFrame {
         String departmentId = (String) departmentIdCombo.getSelectedItem();
         Role role = (Role) roleCombo.getSelectedItem();
 
-        // Validation
         if (nic.isEmpty() || name.isEmpty() || email.isEmpty() || dobStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields except password are required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return null;
@@ -268,7 +265,4 @@ public class UserMNG extends JFrame {
         return new User(nic, name, password, email, dob, departmentId, department, role);
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }

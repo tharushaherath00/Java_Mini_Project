@@ -81,6 +81,13 @@ public class AdminPanel extends JFrame {
                 new UserMNG(user);
             }
         });
+        timetableManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new TimetableMNG(user);
+            }
+        });
     }
 
 

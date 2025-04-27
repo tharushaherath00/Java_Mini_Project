@@ -24,34 +24,34 @@ CREATE TABLE Lecturer (
     NIC VARCHAR(12) PRIMARY KEY,
     Lecturer_ID VARCHAR(10) UNIQUE NOT NULL,
     Dep_ID VARCHAR(5) NOT NULL,
-    FOREIGN KEY (NIC) REFERENCES User(NIC),
-    FOREIGN KEY (Dep_ID) REFERENCES Department(Dep_ID)
+    FOREIGN KEY (NIC) REFERENCES User(NIC) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (Dep_ID) REFERENCES Department(Dep_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Admin (
     NIC VARCHAR(12) PRIMARY KEY,
     Admin_ID VARCHAR(10) UNIQUE NOT NULL,
-    FOREIGN KEY (NIC) REFERENCES User(NIC)
+    FOREIGN KEY (NIC) REFERENCES User(NIC) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Technical_Officer (
     NIC VARCHAR(12) PRIMARY KEY,
     TO_ID VARCHAR(10) UNIQUE NOT NULL,
     Dep_ID ENUM('ICT', 'BT', 'ET', 'MDS') NOT NULL,
-    FOREIGN KEY (NIC) REFERENCES User(NIC)
+    FOREIGN KEY (NIC) REFERENCES User(NIC) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Dean (
     NIC VARCHAR(12) PRIMARY KEY,
     Dep_ID ENUM('ICT', 'BT', 'ET', 'MDS') NOT NULL,
-    FOREIGN KEY (NIC) REFERENCES User(NIC)
+    FOREIGN KEY (NIC) REFERENCES User(NIC) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Student (
     Student_ID VARCHAR(10) PRIMARY KEY,
     NIC VARCHAR(12),
     State VARCHAR(10) CHECK (State IN ('General', 'Repeat')) NOT NULL,
-    FOREIGN KEY (NIC) REFERENCES User(NIC)
+    FOREIGN KEY (NIC) REFERENCES User(NIC) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Course (
@@ -62,8 +62,8 @@ CREATE TABLE Course (
     Dep_ID VARCHAR(5),
     Lecturer_ID VARCHAR(10),
     Course_Materials LONGBLOB,
-    FOREIGN KEY (Dep_ID) REFERENCES Department(Dep_ID),
-    FOREIGN KEY (Lecturer_ID) REFERENCES Lecturer(Lecturer_ID)
+    FOREIGN KEY (Dep_ID) REFERENCES Department(Dep_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (Lecturer_ID) REFERENCES Lecturer(Lecturer_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
     CREATE TABLE Notices (
         notice_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -74,7 +74,6 @@ CREATE TABLE Course (
         target_role ENUM('all', 'student', 'lecturer', 'to', 'admin', 'dean') NOT NULL DEFAULT 'all',
         FOREIGN KEY (posted_by) REFERENCES User(NIC)
     );
-
 
 --CREATE TABLE Notices (
 --    notice_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -106,7 +105,7 @@ CREATE TABLE Student_Course (
     Student_ID VARCHAR(10),
     Course_ID VARCHAR(10),
     PRIMARY KEY (Student_ID, Course_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -126,7 +125,7 @@ CREATE TABLE Marks (
     End_theory DECIMAL(5,2),
     End_practical DECIMAL(5,2),
     PRIMARY KEY (Stu_id, Course_code),
-    FOREIGN KEY (Stu_id) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Stu_id) REFERENCES Student(Student_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_code) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -137,7 +136,7 @@ CREATE TABLE Atendance (
     Session_Type ENUM('Theory', 'Practical'),
     Status ENUM('Present', 'Absent','Medical'),
     Date DATE,
-    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -152,9 +151,18 @@ CREATE TABLE Medical (
     File_Type VARCHAR(50),
     Status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Approved',
     TO_ID VARCHAR(10),
-    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (TO_ID) REFERENCES Technical_Officer(TO_ID)
+    FOREIGN KEY (TO_ID) REFERENCES Technical_Officer(TO_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE files (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    file_id VARCHAR(50) NOT NULL UNIQUE,
+    filename VARCHAR(255) NOT NULL,
+    course_id VARCHAR(50) NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES Course(Course_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO Department (Dep_ID, Dep_Name) VALUES
@@ -2523,3 +2531,15 @@ VALUES
 ('S019', 'ICT2152', '2025-02-01', 'Submitted medical certificate', 's019_20250201.jpg', 'image/jpeg', 'Approved', 'TO01'),
 ('S019', 'ICT2152', '2025-03-01', 'Submitted medical certificate', 's019_20250301.jpg', 'image/jpeg', 'Approved', 'TO01'),
 ('S019', 'ICT2152', '2025-04-05', 'Submitted medical certificate', 's019_20250405.jpg', 'image/jpeg', 'Approved', 'TO01');
+
+INSERT INTO Timetable (Timetable_ID, Course_ID, Day, Start_Time, End_Time, Room, Lecturer_ID) VALUES
+(1, 'ICT2113', 'Monday', '08:00:00', '10:00:00', 'LR101', 'L001'),
+(2, 'ICT2122', 'Monday', '10:30:00', '12:30:00', 'LR102', 'L002'),
+(3, 'ICT2133', 'Tuesday', '13:00:00', '15:00:00', 'LAB01', 'L003'),
+(4, 'ICT2142', 'Wednesday', '09:00:00', '11:00:00', 'LR103', 'L004'),
+(5, 'ICT2152', 'Thursday', '14:00:00', '16:00:00', 'LR104', 'L001'),
+(6, 'ENG2122', 'Friday', '08:30:00', '10:30:00', 'LR105', 'L002'),
+(7, 'ICT2113', 'Wednesday', '11:30:00', '13:30:00', 'LAB02', 'L001'),
+(8, 'ICT2122', 'Thursday', '09:00:00', '11:00:00', 'LR106', 'L002'),
+(9, 'ICT2133', 'Friday', '13:00:00', '15:00:00', 'LAB03', 'L003'),
+(10, 'ICT2142', 'Tuesday', '10:00:00', '12:00:00', 'LR107', 'L004');
