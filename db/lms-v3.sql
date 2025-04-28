@@ -36,7 +36,7 @@ CREATE TABLE Admin (
 CREATE TABLE Technical_Officer (
     NIC VARCHAR(12) PRIMARY KEY,
     TO_ID VARCHAR(10) UNIQUE NOT NULL,
-    Dep_ID ENUM('ICT', 'BT', 'ET', 'MDS') NOT NULL,
+    Dep_ID ENUM('ICT', 'BST', 'ET', 'MDS') NOT NULL,
     FOREIGN KEY (NIC) REFERENCES User(NIC)
 );
 
@@ -146,7 +146,7 @@ CREATE TABLE Medical (
 INSERT INTO Department (Dep_ID, Dep_Name) VALUES
 ('ICT', 'Information and Communication Technology'),
 ('ET', 'Engineering Technology'),
-('BT', 'Bio System Technology'),
+('BST', 'Bio System Technology'),
 ('MDS', 'Multideceplinary');
 
 INSERT INTO User (NIC, Name, Password, Email, DOB, Department_ID, Department, Role) VALUES
