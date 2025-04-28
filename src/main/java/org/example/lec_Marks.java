@@ -27,7 +27,12 @@ public class lec_Marks  extends JFrame {
     private Connection con;
     private PreparedStatement ps;
 
+
+
+
+
     public lec_Marks() {
+
 
 
         setTitle("Lecture Materials");
@@ -38,6 +43,7 @@ public class lec_Marks  extends JFrame {
 
         mdc = new MyDBConnecter();
         con = mdc.getMyConnection();
+
 
         viewbtn.addActionListener(new ActionListener() {
             @Override
@@ -257,9 +263,4 @@ public class lec_Marks  extends JFrame {
         }
     }
 
-
-
-    public static void main(String[] args) {
-        new lec_Marks();
-    }
 }

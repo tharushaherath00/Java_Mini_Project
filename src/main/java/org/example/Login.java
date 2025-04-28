@@ -36,6 +36,8 @@ public class Login extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
+
+
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter both username and password.");
             return;

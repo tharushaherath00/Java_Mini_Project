@@ -153,7 +153,4 @@ public class lec_Materials extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new lec_Materials();
-    }
 }

@@ -14,16 +14,20 @@ public class lec_profile  extends JFrame {
     private JButton updateButton;
     private JButton backbtn;
     private JTextField textField2;
+    private MyDBConnecter mdc;
+    private Connection con;
 
     public lec_profile() {
 
         setTitle("Lecture Profile");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setBounds(100, 100, 400, 500);
         setSize(500, 500);
         setLocationRelativeTo(null);
         setContentPane(Main_p);
         setVisible(true);
+
+        mdc = new MyDBConnecter();
+        con = mdc.getMyConnection();
 
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -38,14 +42,8 @@ public class lec_profile  extends JFrame {
                     return;
                 }
 
-                String driver = "com.mysql.cj.jdbc.Driver";
-                String url = "jdbc:mysql://localhost:3306/tec_lms";
-                String user = "root";
-                String password = "Kali00@#12";
 
                 try {
-                    Class.forName(driver);
-                    Connection con = DriverManager.getConnection(url, user, password);
 
                     String query = "UPDATE user SET Name = ?, Password = ? WHERE NIC = ?";
                     PreparedStatement ps = con.prepareStatement(query);
@@ -64,8 +62,6 @@ public class lec_profile  extends JFrame {
                     con.close();
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -86,12 +82,6 @@ public class lec_profile  extends JFrame {
                 dispose();
             }
         });
-    }
-
-
-
-    public static void main(String[] args) {
-        new lec_profile();
     }
 }
 

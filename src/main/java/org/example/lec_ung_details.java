@@ -98,9 +98,4 @@ public class lec_ung_details extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-        new lec_ung_details();
-
-
-    }
 }
